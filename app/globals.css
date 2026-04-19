@@ -15,14 +15,12 @@
 }
 
 :root {
-  --background: #EEF6F6;
-  --foreground: #19322F;
+  color-scheme: only light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-display);
+  background-color: var(--color-background-light);
+  color: var(--color-nordic-dark);
 }
 
 .hide-scroll::-webkit-scrollbar {
