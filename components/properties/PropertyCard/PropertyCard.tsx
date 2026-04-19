@@ -1,5 +1,5 @@
 import React from "react";
-import { Property } from "../../data/mockProperties";
+import { Property } from "../../../data/mockProperties";
 
 export function PropertyCard({ property }: { property: Property }) {
   const isSale = property.type === "sale";

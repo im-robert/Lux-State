@@ -1,5 +1,5 @@
 import React from "react";
-import { Property } from "../../data/mockProperties";
+import { Property } from "../../../data/mockProperties";
 
 export function FeaturedPropertyCard({ property }: { property: Property }) {
   return (

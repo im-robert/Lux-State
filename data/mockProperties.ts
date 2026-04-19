@@ -111,5 +111,122 @@ export const newInMarketProperties: Property[] = [
     area: 110,
     imageUrl: "https://lh3.googleusercontent.com/aida-public/AB6AXuCfGXdY0g51ojSg0GMeTW9ndLY3mpKK3oMtWxo2nwd_dwi1pgn1Boi_ovaDGIFhUA7nwu3WdBch8ZuHxoHu3QfgM5ceAsp8pglRVyCROWNcy9zeDNP2wqLoevyKGcaEyFYHYpIx2KK46nLWthnHiHugmkKw48kJsL8IjMO1bL3T1Zwt8bvQDTTUHTgB3GqZ2RU2asRzF1jVg0rLw3LWXXTq0YF1CsbhlWpYOuCEpH5bB8zkBlbKXR4At_M46AL8rJqn5c6BrPD5PP8",
     type: "rent"
+  },
+  {
+    id: "9",
+    title: "Malibu Glass Villa",
+    location: "Malibu, California",
+    price: 12500000,
+    beds: 6,
+    baths: 7,
+    area: 5200,
+    imageUrl: "/images/properties/malibu_villa.png",
+    type: "sale",
+    badge: "Limited"
+  },
+  {
+    id: "10",
+    title: "Manhattan Sky Loft",
+    location: "Upper East Side, NYC",
+    price: 8500,
+    priceSuffix: "/mo",
+    beds: 3,
+    baths: 3.5,
+    area: 2800,
+    imageUrl: "/images/properties/nyc_penthouse.png",
+    type: "rent"
+  },
+  {
+    id: "11",
+    title: "Eco Forest Retreat",
+    location: "Oslo, Norway",
+    price: 2450000,
+    beds: 4,
+    baths: 3,
+    area: 3100,
+    imageUrl: "/images/properties/scandi_house.png",
+    type: "sale"
+  },
+  {
+    id: "12",
+    title: "Amalfi Coast Estate",
+    location: "Positano, Italy",
+    price: 15000,
+    priceSuffix: "/mo",
+    beds: 5,
+    baths: 6,
+    area: 4500,
+    imageUrl: "/images/properties/amalfi_estate.png",
+    type: "rent",
+    badge: "Premium"
+  },
+  {
+    id: "13",
+    title: "Zen Minimalist Flat",
+    location: "Shibuya, Tokyo",
+    price: 1850000,
+    beds: 2,
+    baths: 1,
+    area: 95,
+    imageUrl: "/images/properties/tokyo_minimal.png",
+    type: "sale"
+  },
+  {
+    id: "14",
+    title: "Kensington Heritage",
+    location: "London, UK",
+    price: 22000,
+    priceSuffix: "/mo",
+    beds: 4,
+    baths: 4,
+    area: 3800,
+    imageUrl: "/images/properties/london_mansion.png",
+    type: "rent"
+  },
+  {
+    id: "15",
+    title: "Ubud Sanctuary",
+    location: "Bali, Indonesia",
+    price: 950000,
+    beds: 3,
+    baths: 4,
+    area: 2500,
+    imageUrl: "/images/properties/bali_villa.png",
+    type: "sale"
+  },
+  {
+    id: "16",
+    title: "Berlin Bauhaus Loft",
+    location: "Mitte, Berlin",
+    price: 4500,
+    priceSuffix: "/mo",
+    beds: 2,
+    baths: 2,
+    area: 160,
+    imageUrl: "/images/properties/berlin_loft.png",
+    type: "rent"
+  },
+  {
+    id: "17",
+    title: "Dubai Desert Oasis",
+    location: "Palm Jumeirah, Dubai",
+    price: 8750000,
+    beds: 7,
+    baths: 8,
+    area: 7200,
+    imageUrl: "/images/properties/dubai_oasis.png",
+    type: "sale",
+    badge: "Iconic"
+  },
+  {
+    id: "18",
+    title: "Zermatt Peaks Chalet",
+    location: "Zermatt, Switzerland",
+    price: 5500000,
+    beds: 5,
+    baths: 5,
+    area: 3500,
+    imageUrl: "/images/properties/swiss_chalet.png",
+    type: "sale"
   }
 ];
