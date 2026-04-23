@@ -10,10 +10,13 @@ export interface Property {
   beds: number;
   baths: number;
   area: number;
-  image_url: string;
   badge: string | null;
   type: PropertyType;
   is_featured: boolean;
+  latitude: number | null;
+  longitude: number | null;
+  slug: string;
+  gallery_images: string[] | null;
   created_at: string;
 }
 

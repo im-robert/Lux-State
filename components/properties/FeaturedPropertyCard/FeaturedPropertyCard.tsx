@@ -1,14 +1,16 @@
 import React from "react";
+import Link from "next/link";
 import { Property } from "../../../types/property";
 
 export function FeaturedPropertyCard({ property }: { property: Property }) {
   return (
-    <div className="group relative rounded-xl overflow-hidden shadow-soft bg-white cursor-pointer">
-      <div className="aspect-[4/3] w-full overflow-hidden relative">
+    <Link href={`/properties/${property.slug}`} className="block">
+      <div className="group relative rounded-xl overflow-hidden shadow-soft bg-white cursor-pointer">
+        <div className="aspect-[4/3] w-full overflow-hidden relative">
         <img
           alt={property.title}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          src={property.image_url}
+          src={property.gallery_images?.[0] || ""}
         />
         {property.badge && (
           <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider text-nordic-dark">
@@ -47,5 +49,6 @@ export function FeaturedPropertyCard({ property }: { property: Property }) {
         </div>
       </div>
     </div>
+    </Link>
   );
 }
