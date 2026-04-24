@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Property } from "../../types/property";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface PropertyGalleryProps {
   property: Property;
@@ -10,6 +11,19 @@ interface PropertyGalleryProps {
 
 export function PropertyGallery({ property, gallery }: PropertyGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
+  const { t } = useLanguage();
+
+  const getTranslatedBadge = (badge: string | null) => {
+    if (!badge) return null;
+    const lowerBadge = badge.toLowerCase();
+    if (lowerBadge === "exclusive") return t("property.exclusive");
+    if (lowerBadge === "new") return t("property.new");
+    if (lowerBadge === "hot") return t("property.hot");
+    if (lowerBadge === "premium") return t("property.premium");
+    if (lowerBadge === "for sale") return t("property.forSale");
+    if (lowerBadge === "for rent") return t("property.forRent");
+    return badge;
+  };
 
   return (
     <div className="lg:col-span-8 space-y-4">
@@ -21,15 +35,19 @@ export function PropertyGallery({ property, gallery }: PropertyGalleryProps) {
         />
         <div className="absolute top-4 left-4 flex gap-2">
           {property.is_featured && (
-            <span className="bg-mosque text-white text-xs font-medium px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">Premium</span>
+            <span className="bg-mosque text-white text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+              {t("property.premium")}
+            </span>
           )}
           {property.badge && (
-            <span className="bg-white/90 backdrop-blur text-nordic text-xs font-medium px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">{property.badge}</span>
+            <span className="bg-white/90 backdrop-blur text-nordic text-[10px] font-bold px-3 py-1.5 rounded-full uppercase tracking-wider shadow-sm">
+              {getTranslatedBadge(property.badge)}
+            </span>
           )}
         </div>
-        <button className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-nordic px-4 py-2 rounded-lg text-sm font-medium shadow-lg backdrop-blur transition-all flex items-center gap-2">
+        <button className="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-nordic px-4 py-2 rounded-lg text-xs font-bold shadow-lg backdrop-blur transition-all flex items-center gap-2 uppercase tracking-wide">
           <span className="material-icons text-sm">grid_view</span>
-          View All Photos
+          {t("property.viewAllPhotos")}
         </button>
       </div>
       

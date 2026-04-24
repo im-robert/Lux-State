@@ -11,25 +11,18 @@ type LanguageContextType = {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguageState] = useState<Language>("en");
+export function LanguageProvider({ 
+  children, 
+  initialLanguage = "en" 
+}: { 
+  children: React.ReactNode;
+  initialLanguage?: Language;
+}) {
+  const [language, setLanguageState] = useState<Language>(initialLanguage);
 
   useEffect(() => {
-    // Try to get language from cookie
-    const cookieValue = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("language="))
-      ?.split("=")[1] as Language;
-
-    if (cookieValue && translations[cookieValue]) {
-      setLanguageState(cookieValue);
-    } else {
-      // Try to get from browser language
-      const browserLang = navigator.language.split("-")[0] as Language;
-      if (translations[browserLang]) {
-        setLanguageState(browserLang);
-      }
-    }
+    // Sync html lang on mount
+    document.documentElement.lang = language;
   }, []);
 
   const setLanguage = (lang: Language) => {

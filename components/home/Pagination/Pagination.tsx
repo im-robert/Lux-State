@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface PaginationProps {
   totalPages: number;
@@ -11,6 +12,7 @@ interface PaginationProps {
 
 export function Pagination({ totalPages, currentPage }: PaginationProps) {
   const searchParams = useSearchParams();
+  const { t } = useLanguage();
 
   function buildHref(page: number) {
     const params = new URLSearchParams(searchParams.toString());
@@ -34,12 +36,12 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
           className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-nordic-dark/10 text-nordic-dark text-sm font-medium hover:border-mosque hover:text-mosque transition-all hover:shadow-md"
         >
           <span className="material-icons text-sm">chevron_left</span>
-          Prev
+          {t("common.prev")}
         </Link>
       ) : (
         <span className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-nordic-dark/5 text-nordic-muted text-sm font-medium cursor-not-allowed">
           <span className="material-icons text-sm">chevron_left</span>
-          Prev
+          {t("common.prev")}
         </span>
       )}
 
@@ -67,12 +69,12 @@ export function Pagination({ totalPages, currentPage }: PaginationProps) {
           href={buildHref(currentPage + 1)}
           className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-nordic-dark/10 text-nordic-dark text-sm font-medium hover:border-mosque hover:text-mosque transition-all hover:shadow-md"
         >
-          Next
+          {t("common.next")}
           <span className="material-icons text-sm">chevron_right</span>
         </Link>
       ) : (
         <span className="flex items-center gap-1 px-4 py-2 rounded-lg bg-white border border-nordic-dark/5 text-nordic-muted text-sm font-medium cursor-not-allowed">
-          Next
+          {t("common.next")}
           <span className="material-icons text-sm">chevron_right</span>
         </span>
       )}

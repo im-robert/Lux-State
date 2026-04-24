@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 // Fix Leaflet's default icon issue with Next.js/Webpack
 const DefaultIcon = L.icon({
@@ -28,6 +29,7 @@ interface PropertyMapProps {
 
 export function PropertyMap({ location, lat = 37.4419, lng = -122.1430 }: PropertyMapProps) {
   const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
 
   useEffect(() => {
     setMounted(true);
@@ -58,7 +60,7 @@ export function PropertyMap({ location, lat = 37.4419, lng = -122.1430 }: Proper
             <div className="font-display">
               <strong>{location}</strong>
               <br />
-              Estimated Location
+              {t("property.estimatedLocation")}
             </div>
           </Popup>
         </Marker>
@@ -71,7 +73,7 @@ export function PropertyMap({ location, lat = 37.4419, lng = -122.1430 }: Proper
         className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm text-xs font-medium px-3 py-1.5 rounded shadow-sm text-nordic hover:text-mosque transition-colors z-[400] flex items-center gap-1 border border-nordic/10"
       >
         <span className="material-icons text-[14px]">open_in_new</span>
-        View on Google Maps
+        {t("property.viewOnGoogleMaps")}
       </a>
     </div>
   );

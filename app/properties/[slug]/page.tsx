@@ -46,6 +46,14 @@ export default async function PropertyDetailsPage({
     }).format(value);
   };
 
+  const getTranslatedSuffix = (suffix: string | null) => {
+    if (!suffix) return null;
+    const lowerSuffix = suffix.toLowerCase().trim();
+    if (lowerSuffix === "/mo" || lowerSuffix === "per month" || lowerSuffix === "/month") return t("property.mo");
+    if (lowerSuffix === "/yr" || lowerSuffix === "per year" || lowerSuffix === "/year") return t("property.year");
+    return suffix;
+  };
+
   return (
     <div className="bg-clear-day text-nordic min-h-screen">
       <Navbar />
@@ -72,7 +80,7 @@ export default async function PropertyDetailsPage({
                 <div className="mb-4">
                   <h1 className="text-4xl font-display font-light text-nordic mb-2">
                     {formatCurrency(property.price)}
-                    {property.price_suffix && <span className="text-xl text-nordic/50 ml-1">{property.price_suffix}</span>}
+                    {property.price_suffix && <span className="text-xl text-nordic/50 ml-1">{getTranslatedSuffix(property.price_suffix)}</span>}
                   </h1>
                   <p className="text-nordic/60 font-medium flex items-center gap-1">
                     <span className="material-icons text-mosque text-sm">location_on</span>
@@ -167,7 +175,7 @@ export default async function PropertyDetailsPage({
                   {t("property.residenceDescription")}
                 </p>
                 <p>
-                  {t("property.layoutDescription")} {property.beds} {t("property.beds").toLowerCase()} {lang === 'es' ? 'y' : lang === 'fr' ? 'et' : 'and'} {property.baths} {t("property.baths").toLowerCase()} {lang === 'es' ? 'en' : lang === 'fr' ? 'sur' : 'across'} {property.area} {t("property.area").toLowerCase()} {lang === 'es' ? 'de espacio habitable' : lang === 'fr' ? "d'espace de vie" : 'of living space'}, 
+                  {t("property.layoutDescription")} {property.beds} {t("property.beds").toLowerCase()} {t("property.and")} {property.baths} {t("property.baths").toLowerCase()} {t("property.across")} {property.area} {t("property.area").toLowerCase()} {t("property.ofLivingSpace")}, 
                   {t("property.layoutDescriptionEnd")}
                 </p>
               </div>

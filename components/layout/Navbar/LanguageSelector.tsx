@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useLanguage } from "../../../lib/i18n/LanguageContext";
 import { languages, Language } from "../../../lib/i18n/translations";
+import { useRouter } from "next/navigation";
 
 const FlagIcon = ({ country }: { country: string }) => {
   if (country === "US") {
@@ -40,6 +41,7 @@ export function LanguageSelector() {
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const currentLanguage = languages.find((l) => l.code === language) || languages[0];
 
@@ -52,6 +54,13 @@ export function LanguageSelector() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const handleLanguageChange = (code: Language) => {
+    setLanguage(code);
+    setIsOpen(false);
+    // Force a refresh to update server components
+    router.refresh();
+  };
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -71,10 +80,7 @@ export function LanguageSelector() {
           {languages.map((lang) => (
             <button
               key={lang.code}
-              onClick={() => {
-                setLanguage(lang.code);
-                setIsOpen(false);
-              }}
+              onClick={() => handleLanguageChange(lang.code)}
               className={`w-full flex items-center gap-3 px-4 py-3 text-sm transition-colors hover:bg-mosque/5 ${
                 language === lang.code ? "text-mosque font-bold bg-mosque/5" : "text-nordic-dark/70 font-medium"
               }`}

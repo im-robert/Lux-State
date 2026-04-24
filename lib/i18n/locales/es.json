@@ -29,7 +29,9 @@
     "propertiesTotal": "propiedades en total",
     "noProperties": "No se encontraron propiedades en esta página.",
     "all": "Todos",
-    "back": "Atrás"
+    "back": "Atrás",
+    "prev": "Anterior",
+    "next": "Siguiente"
   },
   "home": {
     "featured": {
@@ -50,6 +52,15 @@
     "beds": "Habitaciones",
     "baths": "Baños",
     "garage": "Garaje",
+    "exclusive": "Exclusivo",
+    "new": "Nuevo",
+    "hot": "Destacado",
+    "bedsShort": "Hab.",
+    "bathsShort": "Baños",
+    "forSale": "EN VENTA",
+    "forRent": "EN ALQUILER",
+    "mo": "/mes",
+    "year": "/año",
     "about": "Sobre esta",
     "home": "casa",
     "apartment": "apartamento",
@@ -65,10 +76,17 @@
     "calculateMortgage": "Calcular Hipoteca",
     "startingFrom": "Desde",
     "withDown": "con 20% de inicial",
+    "premium": "Premium",
+    "viewAllPhotos": "Ver Todas las Fotos",
+    "estimatedLocation": "Ubicación Estimada",
+    "viewOnGoogleMaps": "Ver en Google Maps",
     "welcome": "Bienvenido a",
     "welcomeSubtitle": "una propiedad de lujo ubicada en la exclusiva zona de",
     "residenceDescription": "Esta magnífica residencia ofrece un estilo de vida inigualable con lujo moderno y elementos de diseño sofisticados en cada rincón.",
     "layoutDescription": "El diseño de concepto abierto enfatiza la vida interior-exterior, inundando los interiores con luz natural. Con",
+    "and": "y",
+    "across": "en",
+    "ofLivingSpace": "de espacio habitable",
     "layoutDescriptionEnd": "es el santuario perfecto para la relajación y el entretenimiento."
   },
   "filters": {

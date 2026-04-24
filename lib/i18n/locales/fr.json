@@ -29,7 +29,9 @@
     "propertiesTotal": "propriétés au total",
     "noProperties": "Aucune propriété trouvée sur cette page.",
     "all": "Tout",
-    "back": "Retour"
+    "back": "Retour",
+    "prev": "Précédent",
+    "next": "Suivant"
   },
   "home": {
     "featured": {
@@ -50,6 +52,15 @@
     "beds": "Chambres",
     "baths": "Salles de Bain",
     "garage": "Garage",
+    "exclusive": "Exclusif",
+    "new": "Nouveau",
+    "hot": "Populaire",
+    "bedsShort": "Ch.",
+    "bathsShort": "Sdb",
+    "forSale": "À VENDRE",
+    "forRent": "À LOUER",
+    "mo": "/mois",
+    "year": "/an",
     "about": "À propos de cette",
     "home": "maison",
     "apartment": "appartement",
@@ -65,11 +76,18 @@
     "calculateMortgage": "Calculer l'Hypothèque",
     "startingFrom": "À partir de",
     "withDown": "avec 20% d'apport",
+    "premium": "Premium",
+    "viewAllPhotos": "Voir Toutes les Photos",
+    "estimatedLocation": "Localisation Estimée",
+    "viewOnGoogleMaps": "Voir sur Google Maps",
     "welcome": "Bienvenue à",
     "welcomeSubtitle": "une propriété de prestige située dans le quartier exclusif de",
     "residenceDescription": "Cette magnifique résidence offre un style de vie sans pareil avec un luxe moderne et des éléments de design sophistiqués partout.",
-    "layoutDescription": "L'aménagement à aire ouverte est conçu en mettant l'accent sur la vie intérieure-extérieure, inondant les intérieurs de lumière naturelle. Avec",
-    "layoutDescriptionEnd": "c'est le sanctuaire parfait pour la détente et le divertissement."
+    "layoutDescription": "La disposition à aire ouverte est conçue en mettant l'accent sur la vie intérieure-extérieure, inondant les intérieurs de lumière naturelle. Avec",
+    "and": "et",
+    "across": "sur",
+    "ofLivingSpace": "d'espace de vie",
+    "layoutDescriptionEnd": "c'est le sanctuaire parfait para la relaxation et le divertissement."
   },
   "filters": {
     "title": "Filtres",

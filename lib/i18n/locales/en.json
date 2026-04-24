@@ -29,7 +29,9 @@
     "propertiesTotal": "properties total",
     "noProperties": "No properties found on this page.",
     "all": "All",
-    "back": "Back"
+    "back": "Back",
+    "prev": "Prev",
+    "next": "Next"
   },
   "home": {
     "featured": {
@@ -50,6 +52,15 @@
     "beds": "Bedrooms",
     "baths": "Bathrooms",
     "garage": "Garage",
+    "exclusive": "Exclusive",
+    "new": "New",
+    "hot": "Hot",
+    "bedsShort": "Beds",
+    "bathsShort": "Baths",
+    "forSale": "FOR SALE",
+    "forRent": "FOR RENT",
+    "mo": "/mo",
+    "year": "/yr",
     "about": "About this",
     "home": "home",
     "apartment": "apartment",
@@ -65,10 +76,17 @@
     "calculateMortgage": "Calculate Mortgage",
     "startingFrom": "Starting from",
     "withDown": "with 20% down",
+    "premium": "Premium",
+    "viewAllPhotos": "View All Photos",
+    "estimatedLocation": "Estimated Location",
+    "viewOnGoogleMaps": "View on Google Maps",
     "welcome": "Welcome to",
     "welcomeSubtitle": "a premium property located in the exclusive area of",
     "residenceDescription": "This magnificent residence offers an unparalleled lifestyle with modern luxury and sophisticated design elements throughout.",
     "layoutDescription": "The open-concept layout is designed with an emphasis on indoor-outdoor living, flooding the interiors with natural light. Featuring",
+    "and": "and",
+    "across": "across",
+    "ofLivingSpace": "of living space",
     "layoutDescriptionEnd": "it's the perfect sanctuary for relaxation and entertaining."
   },
   "filters": {
