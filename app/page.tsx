@@ -8,13 +8,48 @@ import { createServerClient } from "../lib/supabase/server";
 
 const PAGE_SIZE = 8;
 
-async function getFeaturedProperties() {
+interface FilterParams {
+  query: string;
+  minPrice?: number;
+  maxPrice?: number;
+  beds?: number;
+  baths?: number;
+  type?: string;
+}
+
+function applyFilters(queryBuilder: any, filters: FilterParams) {
+  if (filters.query) {
+    queryBuilder = queryBuilder.or(`location.ilike.%${filters.query}%,title.ilike.%${filters.query}%`);
+  }
+  if (filters.minPrice) {
+    queryBuilder = queryBuilder.gte("price", filters.minPrice);
+  }
+  if (filters.maxPrice) {
+    queryBuilder = queryBuilder.lte("price", filters.maxPrice);
+  }
+  if (filters.beds) {
+    queryBuilder = queryBuilder.gte("beds", filters.beds);
+  }
+  if (filters.baths) {
+    queryBuilder = queryBuilder.gte("baths", filters.baths);
+  }
+  if (filters.type && filters.type !== "Any Type") {
+    queryBuilder = queryBuilder.ilike("title", `%${filters.type}%`);
+  }
+  return queryBuilder;
+}
+
+async function getFeaturedProperties(filters: FilterParams) {
   const supabase = createServerClient();
-  const { data, error } = await supabase
+  let queryBuilder = supabase
     .from("properties")
     .select("*")
     .eq("is_featured", true)
     .order("created_at", { ascending: false });
+
+  queryBuilder = applyFilters(queryBuilder, filters);
+
+  const { data, error } = await queryBuilder;
 
   if (error) {
     console.error("Error fetching featured properties:", error.message);
@@ -23,17 +58,21 @@ async function getFeaturedProperties() {
   return data ?? [];
 }
 
-async function getNewInMarketProperties(page: number) {
+async function getNewInMarketProperties(page: number, filters: FilterParams) {
   const supabase = createServerClient();
   const from = (page - 1) * PAGE_SIZE;
   const to = from + PAGE_SIZE - 1;
 
-  const { data, error, count } = await supabase
+  let queryBuilder = supabase
     .from("properties")
     .select("*", { count: "exact" })
     .eq("is_featured", false)
     .order("created_at", { ascending: false })
     .range(from, to);
+
+  queryBuilder = applyFilters(queryBuilder, filters);
+
+  const { data, error, count } = await queryBuilder;
 
   if (error) {
     console.error("Error fetching new-in-market properties:", error.message);
@@ -55,10 +94,26 @@ export default async function Home({
     parseInt(Array.isArray(rawPage) ? rawPage[0] : rawPage ?? "1", 10)
   );
 
+  const searchQuery = typeof resolvedParams.q === "string" ? resolvedParams.q : "";
+  const minPrice = typeof resolvedParams.minPrice === "string" ? parseInt(resolvedParams.minPrice) : undefined;
+  const maxPrice = typeof resolvedParams.maxPrice === "string" ? parseInt(resolvedParams.maxPrice) : undefined;
+  const beds = typeof resolvedParams.beds === "string" ? parseInt(resolvedParams.beds) : undefined;
+  const baths = typeof resolvedParams.baths === "string" ? parseInt(resolvedParams.baths) : undefined;
+  const type = typeof resolvedParams.type === "string" ? resolvedParams.type : undefined;
+
+  const filters: FilterParams = {
+    query: searchQuery,
+    minPrice,
+    maxPrice,
+    beds,
+    baths,
+    type,
+  };
+
   const [featuredProperties, { data: newInMarketProperties, totalCount }] =
     await Promise.all([
-      getFeaturedProperties(),
-      getNewInMarketProperties(currentPage),
+      getFeaturedProperties(filters),
+      getNewInMarketProperties(currentPage, filters),
     ]);
 
   const totalPages = Math.ceil(totalCount / PAGE_SIZE);

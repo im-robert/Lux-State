@@ -1,6 +1,27 @@
-import React from "react";
+"use client";
+
+import React, { useState } from "react";
+import { SearchFiltersModal } from "../SearchFiltersModal";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export function Hero() {
+  const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(searchParams.get("q") || "");
+
+  const handleSearch = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const params = new URLSearchParams(searchParams.toString());
+    if (query.trim()) {
+      params.set("q", query.trim());
+      params.set("page", "1"); // Reset to page 1 on new search
+    } else {
+      params.delete("q");
+    }
+    router.push(`/?${params.toString()}`);
+  };
+
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-3xl mx-auto text-center space-y-8">
@@ -11,7 +32,7 @@ export function Hero() {
           </span>.
         </h1>
         
-        <div className="relative group max-w-2xl mx-auto">
+        <form onSubmit={handleSearch} className="relative group max-w-2xl mx-auto">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
             <span className="material-icons text-nordic-muted text-2xl group-focus-within:text-mosque transition-colors">search</span>
           </div>
@@ -19,11 +40,13 @@ export function Hero() {
             className="block w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white text-nordic-dark shadow-soft placeholder-nordic-muted/60 focus:ring-2 focus:ring-mosque focus:bg-white transition-all text-lg" 
             placeholder="Search by city, neighborhood, or address..." 
             type="text" 
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
           />
-          <button className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
+          <button type="submit" className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
             Search
           </button>
-        </div>
+        </form>
         
         <div className="flex items-center justify-center gap-3 overflow-x-auto hide-scroll py-2 px-4 -mx-4">
           <button className="whitespace-nowrap px-5 py-2 rounded-full bg-nordic-dark text-white text-sm font-medium shadow-lg shadow-nordic-dark/10 transition-transform hover:-translate-y-0.5">
@@ -44,11 +67,19 @@ export function Hero() {
           
           <div className="w-px h-6 bg-nordic-dark/10 mx-2"></div>
           
-          <button className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors">
+          <button 
+            onClick={() => setIsFiltersModalOpen(true)}
+            className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors"
+          >
             <span className="material-icons text-base">tune</span> Filters
           </button>
         </div>
       </div>
+      
+      <SearchFiltersModal 
+        isOpen={isFiltersModalOpen} 
+        onClose={() => setIsFiltersModalOpen(false)} 
+      />
     </section>
   );
 }
