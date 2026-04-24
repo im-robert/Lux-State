@@ -6,7 +6,7 @@ import { PropertyCard } from "../components/properties/PropertyCard";
 import { Pagination } from "../components/home/Pagination";
 import { createServerClient } from "../lib/supabase/server";
 
-const PAGE_SIZE = 8;
+const PAGE_SIZE = 12;
 
 interface FilterParams {
   query: string;
@@ -45,7 +45,8 @@ async function getFeaturedProperties(filters: FilterParams) {
     .from("properties")
     .select("*")
     .eq("is_featured", true)
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: false })
+    .limit(2);
 
   queryBuilder = applyFilters(queryBuilder, filters);
 
@@ -66,7 +67,6 @@ async function getNewInMarketProperties(page: number, filters: FilterParams) {
   let queryBuilder = supabase
     .from("properties")
     .select("*", { count: "exact" })
-    .eq("is_featured", false)
     .order("created_at", { ascending: false })
     .range(from, to);
 
