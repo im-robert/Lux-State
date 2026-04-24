@@ -5,6 +5,7 @@ import { FeaturedPropertyCard } from "../components/properties/FeaturedPropertyC
 import { PropertyCard } from "../components/properties/PropertyCard";
 import { Pagination } from "../components/home/Pagination";
 import { createServerClient } from "../lib/supabase/server";
+import { getTranslations } from "@/lib/i18n/server";
 
 const PAGE_SIZE = 12;
 
@@ -87,6 +88,7 @@ export default async function Home({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
+  const { t } = await getTranslations();
   const resolvedParams = await searchParams;
   const rawPage = resolvedParams.page;
   const currentPage = Math.max(
@@ -129,17 +131,17 @@ export default async function Home({
           <div className="flex items-end justify-between mb-8">
             <div>
               <h2 className="text-2xl font-light text-nordic-dark">
-                Featured Collections
+                {t("home.featured.title")}
               </h2>
               <p className="text-nordic-muted mt-1 text-sm">
-                Curated properties for the discerning eye.
+                {t("home.featured.subtitle")}
               </p>
             </div>
             <a
               className="hidden sm:flex items-center gap-1 text-sm font-medium text-mosque hover:opacity-70 transition-opacity"
               href="#"
             >
-              View all{" "}
+              {t("common.viewAll")}{" "}
               <span className="material-icons text-sm">arrow_forward</span>
             </a>
           </div>
@@ -156,21 +158,21 @@ export default async function Home({
           <div className="flex items-end justify-between mb-8">
             <div>
               <h2 className="text-2xl font-light text-nordic-dark">
-                New in Market
+                {t("home.new.title")}
               </h2>
               <p className="text-nordic-muted mt-1 text-sm">
-                Fresh opportunities added this week.
+                {t("home.new.subtitle")}
               </p>
             </div>
             <div className="hidden md:flex bg-white p-1 rounded-lg">
               <button className="px-4 py-1.5 rounded-md text-sm font-medium bg-nordic-dark text-white shadow-sm">
-                All
+                {t("common.all")}
               </button>
               <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark">
-                Buy
+                {t("nav.buy")}
               </button>
               <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark">
-                Rent
+                {t("nav.rent")}
               </button>
             </div>
           </div>
@@ -186,7 +188,7 @@ export default async function Home({
               <span className="material-icons text-4xl mb-2 block">
                 search_off
               </span>
-              <p>No properties found on this page.</p>
+              <p>{t("common.noProperties")}</p>
             </div>
           )}
 
@@ -197,8 +199,7 @@ export default async function Home({
 
           {totalPages > 1 && (
             <p className="mt-4 text-center text-xs text-nordic-muted">
-              Page {currentPage} of {totalPages} &mdash; {totalCount} properties
-              total
+              {t("common.page")} {currentPage} {t("common.of")} {totalPages} &mdash; {totalCount} {t("common.propertiesTotal")}
             </p>
           )}
         </section>

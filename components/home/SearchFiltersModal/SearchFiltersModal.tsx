@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface SearchFiltersModalProps {
   isOpen: boolean;
@@ -9,13 +10,14 @@ interface SearchFiltersModalProps {
 }
 
 export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps) {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [location, setLocation] = useState(searchParams.get("q") || "");
   const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "1200000");
   const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "4500000");
-  const [propertyType, setPropertyType] = useState(searchParams.get("type") || "Any Type");
+  const [propertyType, setPropertyType] = useState(searchParams.get("type") || t("filters.anyType"));
   const [bedrooms, setBedrooms] = useState(parseInt(searchParams.get("beds") || "3"));
   const [bathrooms, setBathrooms] = useState(parseInt(searchParams.get("baths") || "2"));
 
@@ -42,7 +44,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     if (maxPrice) params.set("maxPrice", maxPrice.replace(/\D/g, ""));
     else params.delete("maxPrice");
 
-    if (propertyType && propertyType !== "Any Type") params.set("type", propertyType);
+    if (propertyType && propertyType !== t("filters.anyType")) params.set("type", propertyType);
     else params.delete("type");
 
     if (bedrooms > 0) params.set("beds", bedrooms.toString());
@@ -60,7 +62,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     setLocation("");
     setMinPrice("");
     setMaxPrice("");
-    setPropertyType("Any Type");
+    setPropertyType(t("filters.anyType"));
     setBedrooms(0);
     setBathrooms(0);
   };
@@ -75,7 +77,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
       />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[110] w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         <header className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-30">
-          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">Filters</h1>
+          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">{t("filters.title")}</h1>
           <button 
             onClick={onClose}
             className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
@@ -86,12 +88,12 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
         <div className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10">
           <section>
-            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Location</label>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{t("filters.location")}</label>
             <div className="relative group">
               <span className="material-icons absolute left-4 top-3.5 text-gray-400 group-focus-within:text-mosque transition-colors">location_on</span>
               <input 
                 className="w-full pl-12 pr-4 py-3 bg-gray-50 border-0 rounded-lg text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-mosque focus:bg-white transition-all shadow-sm outline-none" 
-                placeholder="City, neighborhood, or address" 
+                placeholder={t("filters.locationPlaceholder")} 
                 type="text" 
                 value={location}
                 onChange={(e) => setLocation(e.target.value)}
@@ -101,7 +103,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
           <section>
             <div className="flex justify-between items-end mb-4">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Price Range</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">{t("filters.priceRange")}</label>
               <span className="text-sm font-medium text-mosque">$1.2M – $4.5M</span>
             </div>
             <div className="relative h-12 flex items-center mb-6 px-2">
@@ -113,7 +115,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-lg border border-transparent focus-within:border-mosque/30 transition-colors">
-                <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">Min Price</label>
+                <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">{t("filters.minPrice")}</label>
                 <div className="flex items-center">
                   <span className="text-gray-400 mr-1">$</span>
                   <input 
@@ -125,7 +127,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                 </div>
               </div>
               <div className="bg-gray-50 p-3 rounded-lg border border-transparent focus-within:border-mosque/30 transition-colors">
-                <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">Max Price</label>
+                <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">{t("filters.maxPrice")}</label>
                 <div className="flex items-center">
                   <span className="text-gray-400 mr-1">$</span>
                   <input 
@@ -141,18 +143,18 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
           <section className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="space-y-3">
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">Property Type</label>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">{t("filters.propertyType")}</label>
               <div className="relative">
                 <select 
                   className="w-full bg-gray-50 border-0 rounded-lg py-3 pl-4 pr-10 text-gray-900 appearance-none focus:ring-2 focus:ring-mosque cursor-pointer outline-none"
                   value={propertyType}
                   onChange={(e) => setPropertyType(e.target.value)}
                 >
-                  <option>Any Type</option>
-                  <option>House</option>
-                  <option>Apartment</option>
-                  <option>Condo</option>
-                  <option>Townhouse</option>
+                  <option>{t("filters.anyType")}</option>
+                  <option>{t("hero.types.house")}</option>
+                  <option>{t("hero.types.apartment")}</option>
+                  <option>{t("hero.types.villa")}</option>
+                  <option>{t("hero.types.penthouse")}</option>
                 </select>
                 <span className="material-icons absolute right-3 top-3 text-gray-400 pointer-events-none">expand_more</span>
               </div>
@@ -160,7 +162,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-900">Bedrooms</span>
+                <span className="text-sm font-medium text-gray-900">{t("filters.bedrooms")}</span>
                 <div className="flex items-center space-x-3 bg-gray-50 rounded-full p-1">
                   <button 
                     onClick={() => setBedrooms(Math.max(0, bedrooms - 1))}
@@ -178,7 +180,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                 </div>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-gray-900">Bathrooms</span>
+                <span className="text-sm font-medium text-gray-900">{t("filters.bathrooms")}</span>
                 <div className="flex items-center space-x-3 bg-gray-50 rounded-full p-1">
                   <button 
                     onClick={() => setBathrooms(Math.max(0, bathrooms - 1))}
@@ -199,12 +201,12 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
           </section>
 
           <section>
-            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Amenities &amp; Features</label>
+            <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">{t("filters.amenities")}</label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               <label className="cursor-pointer group relative">
                 <input defaultChecked className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-mosque bg-mosque/5 text-mosque font-medium text-sm flex items-center justify-center gap-2 transition-all peer-checked:bg-mosque/10 peer-checked:border-mosque peer-checked:text-mosque hover:bg-mosque/10">
-                  <span className="material-icons text-lg">pool</span> Swimming Pool
+                  <span className="material-icons text-lg">pool</span> {t("filters.pool")}
                 </div>
                 <div className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full opacity-100 transition-opacity"></div>
               </label>
@@ -212,28 +214,28 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
               <label className="cursor-pointer group relative">
                 <input className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">fitness_center</span> Gym
+                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">fitness_center</span> {t("filters.gym")}
                 </div>
               </label>
 
               <label className="cursor-pointer group relative">
                 <input className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">local_parking</span> Parking
+                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">local_parking</span> {t("filters.parking")}
                 </div>
               </label>
 
               <label className="cursor-pointer group relative">
                 <input className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">ac_unit</span> Air Conditioning
+                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">ac_unit</span> {t("filters.ac")}
                 </div>
               </label>
 
               <label className="cursor-pointer group relative">
                 <input defaultChecked className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-mosque bg-mosque/5 text-mosque font-medium text-sm flex items-center justify-center gap-2 transition-all peer-checked:bg-mosque/10 peer-checked:border-mosque peer-checked:text-mosque hover:bg-mosque/10">
-                  <span className="material-icons text-lg">wifi</span> High-speed Wifi
+                  <span className="material-icons text-lg">wifi</span> {t("filters.wifi")}
                 </div>
                 <div className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full opacity-100 transition-opacity"></div>
               </label>
@@ -241,7 +243,7 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
               <label className="cursor-pointer group relative">
                 <input className="peer sr-only" type="checkbox" />
                 <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">deck</span> Patio / Terrace
+                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">deck</span> {t("filters.patio")}
                 </div>
               </label>
             </div>
@@ -253,13 +255,13 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             onClick={handleClearFilters}
             className="text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors underline decoration-gray-300 underline-offset-4"
           >
-            Clear all filters
+            {t("filters.clearAll")}
           </button>
           <button 
             className="bg-mosque hover:bg-mosque/90 text-white px-8 py-3 rounded-lg font-medium shadow-lg shadow-mosque/30 transition-all hover:shadow-mosque/40 flex items-center gap-2 transform active:scale-95"
             onClick={handleApplyFilters}
           >
-            Show Results
+            {t("filters.showResults")}
             <span className="material-icons text-sm">arrow_forward</span>
           </button>
         </footer>
@@ -267,3 +269,4 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     </>
   );
 }
+

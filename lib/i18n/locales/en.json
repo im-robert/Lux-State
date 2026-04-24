@@ -1,0 +1,95 @@
+{
+  "nav": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "sell": "Sell",
+    "saved": "Saved Homes"
+  },
+  "hero": {
+    "title": "Find your",
+    "sanctuary": "sanctuary",
+    "placeholder": "Search by city, neighborhood, or address...",
+    "searchButton": "Search",
+    "filters": "Filters",
+    "types": {
+      "all": "All",
+      "house": "House",
+      "apartment": "Apartment",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "selectLanguage": "Select Language",
+    "viewAll": "View all",
+    "page": "Page",
+    "of": "of",
+    "propertiesTotal": "properties total",
+    "noProperties": "No properties found on this page.",
+    "all": "All",
+    "back": "Back"
+  },
+  "home": {
+    "featured": {
+      "title": "Featured Collections",
+      "subtitle": "Curated properties for the discerning eye."
+    },
+    "new": {
+      "title": "New in Market",
+      "subtitle": "Fresh opportunities added this week."
+    }
+  },
+  "property": {
+    "topAgent": "Top Rated Agent",
+    "scheduleVisit": "Schedule Visit",
+    "contactAgent": "Contact Agent",
+    "features": "Property Features",
+    "area": "Square Meters",
+    "beds": "Bedrooms",
+    "baths": "Bathrooms",
+    "garage": "Garage",
+    "about": "About this",
+    "home": "home",
+    "apartment": "apartment",
+    "readMore": "Read more",
+    "amenities": "Amenities",
+    "smartHome": "Smart Home System",
+    "pool": "Swimming Pool",
+    "hvac": "Central Heating & Cooling",
+    "ev": "Electric Vehicle Charging",
+    "gym": "Private Gym",
+    "cellar": "Wine Cellar",
+    "estimatedPayment": "Estimated Payment",
+    "calculateMortgage": "Calculate Mortgage",
+    "startingFrom": "Starting from",
+    "withDown": "with 20% down",
+    "welcome": "Welcome to",
+    "welcomeSubtitle": "a premium property located in the exclusive area of",
+    "residenceDescription": "This magnificent residence offers an unparalleled lifestyle with modern luxury and sophisticated design elements throughout.",
+    "layoutDescription": "The open-concept layout is designed with an emphasis on indoor-outdoor living, flooding the interiors with natural light. Featuring",
+    "layoutDescriptionEnd": "it's the perfect sanctuary for relaxation and entertaining."
+  },
+  "filters": {
+    "title": "Filters",
+    "location": "Location",
+    "locationPlaceholder": "City, neighborhood, or address",
+    "priceRange": "Price Range",
+    "minPrice": "Min Price",
+    "maxPrice": "Max Price",
+    "propertyType": "Property Type",
+    "anyType": "Any Type",
+    "bedrooms": "Bedrooms",
+    "bathrooms": "Bathrooms",
+    "amenities": "Amenities & Features",
+    "pool": "Swimming Pool",
+    "gym": "Gym",
+    "parking": "Parking",
+    "ac": "Air Conditioning",
+    "wifi": "High-speed Wifi",
+    "patio": "Patio / Terrace",
+    "clearAll": "Clear all filters",
+    "showResults": "Show Results"
+  }
+}

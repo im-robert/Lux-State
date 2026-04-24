@@ -1,0 +1,95 @@
+{
+  "nav": {
+    "buy": "Acheter",
+    "rent": "Louer",
+    "sell": "Vendre",
+    "saved": "Maisons Enregistrées"
+  },
+  "hero": {
+    "title": "Trouvez votre",
+    "sanctuary": "sanctuaire",
+    "placeholder": "Recherche par ville, quartier ou adresse...",
+    "searchButton": "Rechercher",
+    "filters": "Filtres",
+    "types": {
+      "all": "Tout",
+      "house": "Maison",
+      "apartment": "Appartement",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "selectLanguage": "Choisir la langue",
+    "viewAll": "Voir tout",
+    "page": "Page",
+    "of": "sur",
+    "propertiesTotal": "propriétés au total",
+    "noProperties": "Aucune propriété trouvée sur cette page.",
+    "all": "Tout",
+    "back": "Retour"
+  },
+  "home": {
+    "featured": {
+      "title": "Collections Vedettes",
+      "subtitle": "Propriétés sélectionnées pour l'œil averti."
+    },
+    "new": {
+      "title": "Nouveautés sur le Marché",
+      "subtitle": "Nouvelles opportunités ajoutées cette semaine."
+    }
+  },
+  "property": {
+    "topAgent": "Agent le Mieux Noté",
+    "scheduleVisit": "Planifier une Visite",
+    "contactAgent": "Contacter l'Agent",
+    "features": "Caractéristiques de la Propriété",
+    "area": "Mètres Carrés",
+    "beds": "Chambres",
+    "baths": "Salles de Bain",
+    "garage": "Garage",
+    "about": "À propos de cette",
+    "home": "maison",
+    "apartment": "appartement",
+    "readMore": "En savoir plus",
+    "amenities": "Équipements",
+    "smartHome": "Système de Maison Intelligente",
+    "pool": "Piscine",
+    "hvac": "Chauffage et Climatisation Centrale",
+    "ev": "Recharge de Véhicules Électriques",
+    "gym": "Salle de Sport Privée",
+    "cellar": "Cave à Vin",
+    "estimatedPayment": "Paiement Estimé",
+    "calculateMortgage": "Calculer l'Hypothèque",
+    "startingFrom": "À partir de",
+    "withDown": "avec 20% d'apport",
+    "welcome": "Bienvenue à",
+    "welcomeSubtitle": "une propriété de prestige située dans le quartier exclusif de",
+    "residenceDescription": "Cette magnifique résidence offre un style de vie sans pareil avec un luxe moderne et des éléments de design sophistiqués partout.",
+    "layoutDescription": "L'aménagement à aire ouverte est conçu en mettant l'accent sur la vie intérieure-extérieure, inondant les intérieurs de lumière naturelle. Avec",
+    "layoutDescriptionEnd": "c'est le sanctuaire parfait pour la détente et le divertissement."
+  },
+  "filters": {
+    "title": "Filtres",
+    "location": "Localisation",
+    "locationPlaceholder": "Ville, quartier ou adresse",
+    "priceRange": "Gamme de Prix",
+    "minPrice": "Prix Min",
+    "maxPrice": "Prix Max",
+    "propertyType": "Type de Propriété",
+    "anyType": "Tous Types",
+    "bedrooms": "Chambres",
+    "bathrooms": "Salles de Bain",
+    "amenities": "Équipements et Options",
+    "pool": "Piscine",
+    "gym": "Gym",
+    "parking": "Parking",
+    "ac": "Climatisation",
+    "wifi": "Wifi Haut Débit",
+    "patio": "Patio / Terrasse",
+    "clearAll": "Effacer tous los filtres",
+    "showResults": "Afficher les Résultats"
+  }
+}

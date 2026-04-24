@@ -1,0 +1,95 @@
+{
+  "nav": {
+    "buy": "Comprar",
+    "rent": "Alquilar",
+    "sell": "Vender",
+    "saved": "Casas Guardadas"
+  },
+  "hero": {
+    "title": "Encuentra tu",
+    "sanctuary": "santuario",
+    "placeholder": "Busca por ciudad, barrio o dirección...",
+    "searchButton": "Buscar",
+    "filters": "Filtros",
+    "types": {
+      "all": "Todos",
+      "house": "Casa",
+      "apartment": "Apartamento",
+      "villa": "Villa",
+      "penthouse": "Penthouse"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ha ocurrido un error",
+    "selectLanguage": "Seleccionar Idioma",
+    "viewAll": "Ver todo",
+    "page": "Página",
+    "of": "de",
+    "propertiesTotal": "propiedades en total",
+    "noProperties": "No se encontraron propiedades en esta página.",
+    "all": "Todos",
+    "back": "Atrás"
+  },
+  "home": {
+    "featured": {
+      "title": "Colecciones Destacadas",
+      "subtitle": "Propiedades seleccionadas para el ojo exigente."
+    },
+    "new": {
+      "title": "Novedades en el Mercado",
+      "subtitle": "Nuevas oportunidades añadidas esta semana."
+    }
+  },
+  "property": {
+    "topAgent": "Agente Destacado",
+    "scheduleVisit": "Programar Visita",
+    "contactAgent": "Contactar Agente",
+    "features": "Características de la Propiedad",
+    "area": "Metros Cuadrados",
+    "beds": "Habitaciones",
+    "baths": "Baños",
+    "garage": "Garaje",
+    "about": "Sobre esta",
+    "home": "casa",
+    "apartment": "apartamento",
+    "readMore": "Leer más",
+    "amenities": "Comodidades",
+    "smartHome": "Sistema de Casa Inteligente",
+    "pool": "Piscina",
+    "hvac": "Calefacción y Aire Central",
+    "ev": "Carga de Vehículos Eléctricos",
+    "gym": "Gimnasio Privado",
+    "cellar": "Bodega de Vinos",
+    "estimatedPayment": "Pago Estimado",
+    "calculateMortgage": "Calcular Hipoteca",
+    "startingFrom": "Desde",
+    "withDown": "con 20% de inicial",
+    "welcome": "Bienvenido a",
+    "welcomeSubtitle": "una propiedad de lujo ubicada en la exclusiva zona de",
+    "residenceDescription": "Esta magnífica residencia ofrece un estilo de vida inigualable con lujo moderno y elementos de diseño sofisticados en cada rincón.",
+    "layoutDescription": "El diseño de concepto abierto enfatiza la vida interior-exterior, inundando los interiores con luz natural. Con",
+    "layoutDescriptionEnd": "es el santuario perfecto para la relajación y el entretenimiento."
+  },
+  "filters": {
+    "title": "Filtros",
+    "location": "Ubicación",
+    "locationPlaceholder": "Ciudad, barrio o dirección",
+    "priceRange": "Rango de Precios",
+    "minPrice": "Precio Mín",
+    "maxPrice": "Precio Máx",
+    "propertyType": "Tipo de Propiedad",
+    "anyType": "Cualquiera",
+    "bedrooms": "Habitaciones",
+    "bathrooms": "Baños",
+    "amenities": "Comodidades y Extras",
+    "pool": "Piscina",
+    "gym": "Gimnasio",
+    "parking": "Parqueo",
+    "ac": "Aire Acondicionado",
+    "wifi": "Wifi de alta velocidad",
+    "patio": "Patio / Terraza",
+    "clearAll": "Limpiar todos los filtros",
+    "showResults": "Mostrar Resultados"
+  }
+}

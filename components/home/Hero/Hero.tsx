@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { SearchFiltersModal } from "../SearchFiltersModal";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 export function Hero() {
+  const { t } = useLanguage();
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -24,7 +26,7 @@ export function Hero() {
 
   const handleTypeFilter = (type: string) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (type === "All") {
+    if (type === "all") {
       params.delete("type");
     } else {
       params.set("type", type);
@@ -33,14 +35,22 @@ export function Hero() {
     router.push(`/?${params.toString()}`);
   };
 
-  const currentType = searchParams.get("type") || "All";
+  const currentType = searchParams.get("type") || "all";
+
+  const propertyTypes = [
+    { id: "all", label: t("hero.types.all") },
+    { id: "House", label: t("hero.types.house") },
+    { id: "Apartment", label: t("hero.types.apartment") },
+    { id: "Villa", label: t("hero.types.villa") },
+    { id: "Penthouse", label: t("hero.types.penthouse") },
+  ];
 
   return (
     <section className="py-12 md:py-16">
       <div className="max-w-3xl mx-auto text-center space-y-8">
         <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-nordic-dark leading-tight">
-          Find your <span className="relative inline-block">
-            <span className="relative z-10 font-medium">sanctuary</span>
+          {t("hero.title")} <span className="relative inline-block">
+            <span className="relative z-10 font-medium">{t("hero.sanctuary")}</span>
             <span className="absolute bottom-2 left-0 w-full h-3 bg-mosque/20 -rotate-1 z-0"></span>
           </span>.
         </h1>
@@ -51,30 +61,30 @@ export function Hero() {
           </div>
           <input 
             className="block w-full pl-12 pr-4 py-4 rounded-xl border-none bg-white text-nordic-dark shadow-soft placeholder-nordic-muted/60 focus:ring-2 focus:ring-mosque focus:bg-white transition-all text-lg" 
-            placeholder="Search by city, neighborhood, or address..." 
+            placeholder={t("hero.placeholder")} 
             type="text" 
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
           <button type="submit" className="absolute inset-y-2 right-2 px-6 bg-mosque hover:bg-mosque/90 text-white font-medium rounded-lg transition-colors flex items-center justify-center shadow-lg shadow-mosque/20">
-            Search
+            {t("hero.searchButton")}
           </button>
         </form>
         
         <div className="flex items-center justify-center gap-3 overflow-x-auto hide-scroll py-2 px-4 -mx-4">
-          {["All", "House", "Apartment", "Villa", "Penthouse"].map((type) => {
-            const isActive = currentType === type;
+          {propertyTypes.map((type) => {
+            const isActive = currentType === type.id;
             return (
               <button 
-                key={type}
-                onClick={() => handleTypeFilter(type)}
+                key={type.id}
+                onClick={() => handleTypeFilter(type.id)}
                 className={`whitespace-nowrap px-5 py-2 rounded-full text-sm font-medium transition-all ${
                   isActive 
                     ? "bg-nordic-dark text-white shadow-lg shadow-nordic-dark/10 hover:-translate-y-0.5" 
                     : "bg-white border border-nordic-dark/5 text-nordic-muted hover:text-nordic-dark hover:border-mosque/50 hover:bg-mosque/5"
                 }`}
               >
-                {type}
+                {type.label}
               </button>
             );
           })}
@@ -85,7 +95,7 @@ export function Hero() {
             onClick={() => setIsFiltersModalOpen(true)}
             className="whitespace-nowrap flex items-center gap-1 px-4 py-2 rounded-full text-nordic-dark font-medium text-sm hover:bg-black/5 transition-colors"
           >
-            <span className="material-icons text-base">tune</span> Filters
+            <span className="material-icons text-base">tune</span> {t("hero.filters")}
           </button>
         </div>
       </div>
