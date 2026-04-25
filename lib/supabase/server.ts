@@ -1,16 +1,30 @@
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient as createSSRClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-// This client is intended for server-side use only (Server Components, Route Handlers, Server Actions).
-// It uses the public anon key, which is safe to expose as RLS policies protect the data.
 export function createServerClient() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const cookieStore = cookies();
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error(
-      "Missing Supabase environment variables. Check NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY."
-    );
-  }
-
-  return createClient(supabaseUrl, supabaseAnonKey);
+  return createSSRClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        async getAll() {
+          return (await cookieStore).getAll();
+        },
+        async setAll(cookiesToSet) {
+          try {
+            const resolvedCookies = await cookieStore;
+            cookiesToSet.forEach(({ name, value, options }) =>
+              resolvedCookies.set(name, value, options)
+            );
+          } catch {
+            // The `setAll` method was called from a Server Component.
+            // This can be ignored if you have middleware refreshing
+            // user sessions.
+          }
+        },
+      },
+    }
+  );
 }

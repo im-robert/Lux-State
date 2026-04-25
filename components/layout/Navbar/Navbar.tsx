@@ -4,9 +4,13 @@ import React from "react";
 import Link from "next/link";
 import { LanguageSelector } from "./LanguageSelector";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { useAuth } from "@/lib/auth/AuthContext";
+import { useState } from "react";
 
 export function Navbar() {
   const { t } = useLanguage();
+  const { user, signOut } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-50 bg-background-light/95 backdrop-blur-md border-b border-nordic-dark/10">
@@ -38,15 +42,49 @@ export function Navbar() {
                 <span className="material-icons">notifications_none</span>
                 <span className="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full border-2 border-background-light"></span>
               </button>
-              <button className="flex items-center gap-2">
-                <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent hover:ring-mosque transition-all">
-                  <img 
-                    alt="Profile" 
-                    className="w-full h-full object-cover" 
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAWhQZ663Bd08kmzjbOPmUk4UIxYooNONShMEFXLR-DtmVi6Oz-TiaY77SPwFk7g0OobkeZEOMvt6v29mSOD0Xm2g95WbBG3ZjWXmiABOUwGU0LOySRfVDo-JTXQ0-gtwjWxbmue0qDm91m-zEOEZwAW6iRFB1qC1bAU-wkjxm67Sbztq8w7srHkFT9bVEC86qG-FzhOBTomhAurNRmx9l8Yfqabk328NfdKuVLckgCdaPsNFE3yN65MeoRi05GA_gXIMwG4YDIeA"
-                  />
-                </div>
-              </button>
+              
+              <div className="relative">
+                {user ? (
+                  <button 
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="w-9 h-9 rounded-full bg-gray-200 overflow-hidden ring-2 ring-transparent hover:ring-mosque transition-all">
+                      <img 
+                        alt="Profile" 
+                        className="w-full h-full object-cover" 
+                        src={user.user_metadata.avatar_url || "https://www.gravatar.com/avatar/?d=mp"}
+                      />
+                    </div>
+                  </button>
+                ) : (
+                  <Link 
+                    href="/login"
+                    className="bg-mosque text-white px-5 py-2 rounded-lg font-medium text-sm hover:bg-primary-dark transition-all shadow-soft hover:shadow-soft-hover"
+                  >
+                    {t("nav.login") || "Login"}
+                  </Link>
+                )}
+
+                {isDropdownOpen && user && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-soft-hover border border-nordic-dark/5 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-nordic-dark/5 mb-1">
+                      <p className="text-xs text-nordic-dark/50">{t("nav.signedInAs") || "Signed in as"}</p>
+                      <p className="text-sm font-semibold text-nordic-dark truncate">{user.email}</p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        signOut();
+                        setIsDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center gap-2"
+                    >
+                      <span className="material-icons text-lg">logout</span>
+                      {t("nav.signOut") || "Sign Out"}
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>

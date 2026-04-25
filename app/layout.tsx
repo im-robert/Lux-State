@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { cookies } from "next/headers";
 import { Language } from "@/lib/i18n/translations";
+import { AuthProvider } from "@/lib/auth/AuthContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -30,12 +31,15 @@ export default async function RootLayout({
     >
       <head>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
       </head>
       <body className="min-h-full flex flex-col bg-background-light text-nordic-dark font-display">
-        <LanguageProvider initialLanguage={lang}>
-          {children}
-        </LanguageProvider>
+        <AuthProvider>
+          <LanguageProvider initialLanguage={lang}>
+            {children}
+          </LanguageProvider>
+        </AuthProvider>
       </body>
     </html>
   );
