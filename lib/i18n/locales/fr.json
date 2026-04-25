@@ -3,7 +3,11 @@
     "buy": "Acheter",
     "rent": "Louer",
     "sell": "Vendre",
-    "saved": "Maisons Enregistrées"
+    "saved": "Maisons Enregistrées",
+    "login": "Connexion",
+    "signOut": "Déconnexion",
+    "signedInAs": "Connecté en tant que",
+    "profile": "Mon Profil"
   },
   "hero": {
     "title": "Trouvez votre",
@@ -109,5 +113,16 @@
     "patio": "Patio / Terrasse",
     "clearAll": "Effacer tous los filtres",
     "showResults": "Afficher les Résultats"
+  },
+  "auth": {
+    "welcomeTitle": "Bienvenue à LuxeEstate",
+    "welcomeSubtitle": "Débloquez des propriétés exclusives dans le monde entier.",
+    "continueWithGoogle": "Continuer avec Google",
+    "continueWithGithub": "Continuer avec GitHub",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signUp": "Inscrivez-vous",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "help": "Centre d'aide"
   }
 }
