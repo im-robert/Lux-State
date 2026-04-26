@@ -17,7 +17,7 @@ export default async function AdminDashboard() {
     <div className="py-10 space-y-10">
       <div>
         <h1 className="text-3xl font-bold text-nordic dark:text-white tracking-tight">Dashboard Overview</h1>
-        <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back. Here's what's happening with LuxeEstate.</p>
+        <p className="text-gray-500 dark:text-gray-400 mt-1">Welcome back. Here's what's happening with LuxState.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

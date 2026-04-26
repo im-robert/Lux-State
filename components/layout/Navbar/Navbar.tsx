@@ -34,7 +34,7 @@ export function Navbar() {
               <span className="material-icons text-white text-xl">apartment</span>
             </div>
             <span className="text-2xl font-bold tracking-tight text-nordic-dark">
-              Luxe<span className="text-mosque">Estate</span>
+              Lux<span className="text-mosque">State</span>
             </span>
           </Link>
 

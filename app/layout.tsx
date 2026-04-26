@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "LuxeEstate - Premium Real Estate",
+  title: "LuxState - Premium Real Estate",
   description: "Find your sanctuary. Premium real estate listings and properties.",
 };
 

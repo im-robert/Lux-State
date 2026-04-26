@@ -54,7 +54,7 @@ export default function LoginPage() {
             <span className="material-symbols-rounded text-3xl">real_estate_agent</span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-nordic-dark dark:text-white mb-2">
-            {t("auth.welcomeTitle") || "Welcome to LuxeEstate"}
+            {t("auth.welcomeTitle") || "Welcome to LuxState"}
           </h1>
           <p className="text-nordic-dark/60 dark:text-gray-400">
             {t("auth.welcomeSubtitle") || "Unlock exclusive properties worldwide."}
