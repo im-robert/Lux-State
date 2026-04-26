@@ -123,6 +123,23 @@
     "signUp": "Regístrate",
     "privacy": "Política de privacidad",
     "terms": "Términos de servicio",
-    "help": "Centro de ayuda"
+    "help": "Centro de ayuda",
+    "googleNotAvailableTitle": "Próximamente",
+    "googleNotAvailableMessage": "El inicio de sesión con Google está actualmente en desarrollo. Por favor, utiliza GitHub por el momento."
+  },
+  "admin": {
+    "title": "Panel de Administración",
+    "properties": "Propiedades",
+    "users": "Roles de Usuario",
+    "dashboard": "Panel de Control",
+    "viewSite": "Ver Sitio",
+    "totalProperties": "Propiedades Totales",
+    "registeredUsers": "Usuarios Registrados",
+    "activeListings": "Anuncios Activos",
+    "inquiries": "Consultas",
+    "recentActivity": "Actividad Reciente",
+    "quickActions": "Acciones Rápidas",
+    "addProperty": "Añadir Propiedad",
+    "reviewRoles": "Revisar Roles"
   }
 }

@@ -1,14 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LoginPage() {
   const { t } = useLanguage();
+  const [notification, setNotification] = useState<{ title: string; message: string } | null>(null);
   const supabase = createClient();
 
+  useEffect(() => {
+    if (notification) {
+      const timer = setTimeout(() => {
+        setNotification(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [notification]);
+
   const handleSignIn = async (provider: "google" | "github") => {
+    if (provider === "google") {
+      setNotification({
+        title: t("auth.googleNotAvailableTitle") || "Coming Soon",
+        message: t("auth.googleNotAvailableMessage") || "Google login is currently under development. Please use GitHub for now."
+      });
+      return;
+    }
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -90,6 +109,39 @@ export default function LoginPage() {
           </nav>
         </div>
       </main>
+
+      {/* Premium Notification */}
+      <AnimatePresence>
+        {notification && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-sm"
+          >
+            <div className="bg-white/90 dark:bg-nordic-dark/90 backdrop-blur-md border border-mosque/20 dark:border-white/10 rounded-2xl p-4 shadow-2xl flex gap-4 items-start">
+              <div className="bg-mosque/10 dark:bg-mosque/20 p-2 rounded-xl text-mosque">
+                <span className="material-symbols-rounded">info</span>
+              </div>
+              <div className="flex-1">
+                <h3 className="font-bold text-nordic-dark dark:text-white text-sm mb-0.5">
+                  {notification.title}
+                </h3>
+                <p className="text-nordic-dark/70 dark:text-gray-400 text-xs leading-relaxed">
+                  {notification.message}
+                </p>
+              </div>
+              <button 
+                onClick={() => setNotification(null)}
+                className="text-nordic-dark/30 dark:text-white/30 hover:text-nordic-dark dark:hover:text-white transition-colors"
+              >
+                <span className="material-symbols-rounded text-sm">close</span>
+              </button>
+            </div>
+            <div className="absolute inset-0 -z-10 bg-mosque/5 blur-2xl rounded-full"></div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

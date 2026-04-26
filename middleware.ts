@@ -28,7 +28,22 @@ export async function middleware(request: NextRequest) {
   );
 
   // refreshing the auth token
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Protected Admin Routes
+  if (request.nextUrl.pathname.startsWith("/admin")) {
+    if (!user) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // Check user role from app_metadata (faster and more reliable in middleware)
+    const role = user.app_metadata?.role;
+
+    if (role !== "admin") {
+      console.log("Middleware: Redirecting to home. User role from metadata:", role);
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+  }
 
   return supabaseResponse;
 }

@@ -25,15 +25,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (error) {
         console.error("Error getting session:", error);
       }
+      const currentUser = session?.user ?? null;
       setSession(session);
-      setUser(session?.user ?? null);
+      setUser(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+        await supabase.from("profiles").upsert({
+          id: currentUser.id,
+          email: currentUser.email!,
+        }, { onConflict: "id" });
+      }
     };
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       setSession(session);
-      setUser(session?.user ?? null);
+      const currentUser = session?.user ?? null;
+      setUser(currentUser);
       setLoading(false);
+
+      if (currentUser) {
+        // Ensure profile exists (Safety check complementing the DB trigger)
+        await supabase.from("profiles").upsert({
+          id: currentUser.id,
+          email: currentUser.email!,
+        }, { onConflict: "id" });
+      }
     });
 
     setData();

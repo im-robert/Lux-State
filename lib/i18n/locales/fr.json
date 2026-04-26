@@ -123,6 +123,23 @@
     "signUp": "Inscrivez-vous",
     "privacy": "Politique de confidentialité",
     "terms": "Conditions d'utilisation",
-    "help": "Centre d'aide"
+    "help": "Centre d'aide",
+    "googleNotAvailableTitle": "Bientôt disponible",
+    "googleNotAvailableMessage": "La connexion Google est actuellement en cours de développement. Veuillez utiliser GitHub pour le moment."
+  },
+  "admin": {
+    "title": "Tableau de Bord Admin",
+    "properties": "Propriétés",
+    "users": "Rôles Utilisateurs",
+    "dashboard": "Tableau de Bord",
+    "viewSite": "Voir le Site",
+    "totalProperties": "Total des Propriétés",
+    "registeredUsers": "Utilisateurs Inscrits",
+    "activeListings": "Annonces Actives",
+    "inquiries": "Demandes",
+    "recentActivity": "Activité Récente",
+    "quickActions": "Actions Rapides",
+    "addProperty": "Ajouter Propriété",
+    "reviewRoles": "Réviser Rôles"
   }
 }

@@ -123,6 +123,23 @@
     "signUp": "Sign up",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "help": "Help Center"
+    "help": "Help Center",
+    "googleNotAvailableTitle": "Coming Soon",
+    "googleNotAvailableMessage": "Google login is currently under development. Please use GitHub for now."
+  },
+  "admin": {
+    "title": "Admin Dashboard",
+    "properties": "Properties",
+    "users": "User Roles",
+    "dashboard": "Dashboard",
+    "viewSite": "View Site",
+    "totalProperties": "Total Properties",
+    "registeredUsers": "Registered Users",
+    "activeListings": "Active Listings",
+    "inquiries": "Inquiries",
+    "recentActivity": "Recent Activity",
+    "quickActions": "Quick Actions",
+    "addProperty": "Add Property",
+    "reviewRoles": "Review Roles"
   }
 }
