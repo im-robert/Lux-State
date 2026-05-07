@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import { createServerClient } from "@/lib/supabase/server";
 
 export default async function AdminDashboard() {
@@ -86,12 +87,12 @@ export default async function AdminDashboard() {
             Quick Actions
           </h2>
           <div className="grid grid-cols-2 gap-4">
-            <button className="flex flex-col items-center justify-center gap-4 p-8 bg-[#EEF6F6] dark:bg-primary/5 hover:bg-primary/10 dark:hover:bg-primary/10 border border-primary/5 rounded-2xl transition-all group">
+            <Link href="/admin/properties/new" className="flex flex-col items-center justify-center gap-4 p-8 bg-[#EEF6F6] dark:bg-primary/5 hover:bg-primary/10 dark:hover:bg-primary/10 border border-primary/5 rounded-2xl transition-all group">
               <div className="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <span className="material-icons">add_circle</span>
               </div>
               <span className="text-sm font-bold text-nordic dark:text-white">Add Property</span>
-            </button>
+            </Link>
             <button className="flex flex-col items-center justify-center gap-4 p-8 bg-[#EEF6F6] dark:bg-primary/5 hover:bg-primary/10 dark:hover:bg-primary/10 border border-primary/5 rounded-2xl transition-all group">
               <div className="w-12 h-12 rounded-xl bg-nordic text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                 <span className="material-icons">manage_accounts</span>

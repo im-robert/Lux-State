@@ -18,6 +18,10 @@ export interface Property {
   slug: string;
   gallery_images: string[] | null;
   created_at: string;
+  description: string | null;
+  year_built: number | null;
+  parking: number | null;
+  amenities: string[] | null;
 }
 
 export interface PaginatedProperties {

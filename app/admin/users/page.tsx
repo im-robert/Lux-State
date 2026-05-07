@@ -12,7 +12,7 @@ export default async function UsersAdminPage() {
 
   return (
     <div className="max-w-7xl mx-auto w-full pb-12 space-y-4">
-      <header class="w-full pt-8 pb-6">
+      <header className="w-full pt-8 pb-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-nordic dark:text-white">User Directory</h1>
