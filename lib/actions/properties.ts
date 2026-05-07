@@ -171,17 +171,22 @@ export async function updateProperty(
 }
 
 // ---------------------------------------------------------------------------
-// Delete property
+// Toggle property active/inactive status (soft-delete replacement)
 // ---------------------------------------------------------------------------
 
-export async function deleteProperty(
-  id: string
+export async function togglePropertyStatus(
+  id: string,
+  isActive: boolean
 ): Promise<{ error?: string }> {
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return { error: "Unauthorized" };
 
-  const { error } = await supabase.from("properties").delete().eq("id", id);
+  const { error } = await supabase
+    .from("properties")
+    .update({ is_active: isActive })
+    .eq("id", id);
+
   if (error) return { error: error.message };
 
   revalidatePath("/admin/properties");

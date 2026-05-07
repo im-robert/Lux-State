@@ -46,6 +46,7 @@ async function getFeaturedProperties(filters: FilterParams) {
     .from("properties")
     .select("*")
     .eq("is_featured", true)
+    .eq("is_active", true)
     .order("created_at", { ascending: false })
     .limit(2);
 
@@ -68,6 +69,7 @@ async function getNewInMarketProperties(page: number, filters: FilterParams) {
   let queryBuilder = supabase
     .from("properties")
     .select("*", { count: "exact" })
+    .eq("is_active", true)
     .order("created_at", { ascending: false })
     .range(from, to);
 

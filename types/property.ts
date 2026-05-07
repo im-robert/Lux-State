@@ -22,6 +22,7 @@ export interface Property {
   year_built: number | null;
   parking: number | null;
   amenities: string[] | null;
+  is_active: boolean;
 }
 
 export interface PaginatedProperties {

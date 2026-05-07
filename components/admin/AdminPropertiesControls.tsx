@@ -65,7 +65,7 @@ export function AdminPropertiesControls({ total }: { total: number }) {
         >
           <span className="material-icons text-[18px] text-primary">tune</span>
           Filters
-          {(sp.get("type") || sp.get("badge") || sp.get("featured") || sp.get("min_beds") || sp.get("min_price") || sp.get("max_price")) && (
+          {(sp.get("type") || sp.get("badge") || sp.get("featured") || sp.get("active") || sp.get("min_beds") || sp.get("min_price") || sp.get("max_price")) && (
             <span className="w-2 h-2 rounded-full bg-primary" />
           )}
         </button>
@@ -95,6 +95,7 @@ function FilterModal({ searchParams: sp, onClose, onApply }: FilterModalProps) {
   const [type, setType] = useState(sp.get("type") ?? "");
   const [badge, setBadge] = useState(sp.get("badge") ?? "");
   const [featured, setFeatured] = useState(sp.get("featured") ?? "");
+  const [active, setActive] = useState(sp.get("active") ?? "");
   const [minBeds, setMinBeds] = useState(parseInt(sp.get("min_beds") ?? "0") || 0);
   const [minBaths, setMinBaths] = useState(parseInt(sp.get("min_baths") ?? "0") || 0);
   const [minPrice, setMinPrice] = useState(sp.get("min_price") ?? "");
@@ -134,7 +135,7 @@ function FilterModal({ searchParams: sp, onClose, onApply }: FilterModalProps) {
 
   const handleApply = () => {
     onApply({
-      type, badge, featured,
+      type, badge, featured, active,
       min_beds: minBeds > 0 ? String(minBeds) : "",
       min_baths: minBaths > 0 ? String(minBaths) : "",
       min_price: minPrice,
@@ -143,8 +144,8 @@ function FilterModal({ searchParams: sp, onClose, onApply }: FilterModalProps) {
   };
 
   const handleClear = () => {
-    setType(""); setBadge(""); setFeatured(""); setMinBeds(0); setMinBaths(0); setMinPrice(""); setMaxPrice("");
-    onApply({ type: "", badge: "", featured: "", min_beds: "", min_baths: "", min_price: "", max_price: "" });
+    setType(""); setBadge(""); setFeatured(""); setActive(""); setMinBeds(0); setMinBaths(0); setMinPrice(""); setMaxPrice("");
+    onApply({ type: "", badge: "", featured: "", active: "", min_beds: "", min_baths: "", min_price: "", max_price: "" });
   };
 
   return (
@@ -198,6 +199,25 @@ function FilterModal({ searchParams: sp, onClose, onApply }: FilterModalProps) {
               {[["", "All"], ["true", "Featured only"], ["false", "Non-featured"]].map(([v, l]) => (
                 <button key={v} type="button" onClick={() => setFeatured(v)}
                   className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${featured === v ? "bg-primary text-white border-primary" : "border-primary/20 dark:border-primary/30 text-nordic dark:text-gray-300 hover:bg-primary/5"}`}>
+                  {l}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Visibility (Active/Inactive) */}
+          <div>
+            <label className={lbl}>Visibility</label>
+            <div className="flex gap-3">
+              {[["", "All"], ["true", "Active only"], ["false", "Inactive only"]].map(([v, l]) => (
+                <button key={v} type="button" onClick={() => setActive(v)}
+                  className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors ${
+                    active === v
+                      ? v === "false"
+                        ? "bg-gray-500 text-white border-gray-500"
+                        : "bg-primary text-white border-primary"
+                      : "border-primary/20 dark:border-primary/30 text-nordic dark:text-gray-300 hover:bg-primary/5"
+                  }`}>
                   {l}
                 </button>
               ))}

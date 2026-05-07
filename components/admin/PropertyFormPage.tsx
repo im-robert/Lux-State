@@ -1,9 +1,21 @@
 "use client";
 
-import React, { useState, useRef, useTransition } from "react";
+import React, { useState, useRef, useTransition, useEffect } from "react";
 import Link from "next/link";
 import { createProperty, updateProperty, uploadPropertyImages, deletePropertyImage } from "@/lib/actions/properties";
 import { Property } from "@/types/property";
+import { MapContainer, TileLayer, Marker, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
+
+// Fix Leaflet marker icon
+const DefaultIcon = L.icon({
+  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
 
 const AMENITY_OPTIONS = ["Swimming Pool", "Garden", "Air Conditioning", "Smart Home", "Gym", "Garage", "Elevator", "Security System"];
 
@@ -30,8 +42,8 @@ export function PropertyFormPage({ mode, property }: Props) {
   const [galleryUrls, setGalleryUrls] = useState<string[]>(property?.gallery_images ?? []);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const pendingFilesRef = useRef<File[]>([]);
-  const latRef = useRef<HTMLInputElement>(null);
-  const lngRef = useRef<HTMLInputElement>(null);
+  const [latitude, setLatitude] = useState(property?.latitude?.toString() ?? "");
+  const [longitude, setLongitude] = useState(property?.longitude?.toString() ?? "");
 
   const toggleAmenity = (a: string) =>
     setAmenities(p => p.includes(a) ? p.filter(x => x !== a) : [...p, a]);
@@ -91,7 +103,7 @@ export function PropertyFormPage({ mode, property }: Props) {
       fd.set("location", location); fd.set("area", area); fd.set("year_built", yearBuilt);
       fd.set("beds", beds.toString()); fd.set("baths", baths.toString());
       fd.set("parking", parking.toString()); fd.set("is_featured", isFeatured.toString());
-      fd.set("latitude", latRef.current?.value ?? ""); fd.set("longitude", lngRef.current?.value ?? "");
+      fd.set("latitude", latitude); fd.set("longitude", longitude);
       amenities.forEach(a => fd.append("amenities", a));
       finalUrls.forEach(u => fd.append("gallery_images", u));
 
@@ -188,7 +200,7 @@ export function PropertyFormPage({ mode, property }: Props) {
                 </div>
                 <div>
                   <label className={lbl} htmlFor="type">Listing Type</label>
-                  <select id="type" value={type} onChange={e => setType(e.target.value)} className={sel}>
+                  <select id="type" value={type} onChange={e => setType(e.target.value as "sale" | "rent")} className={sel}>
                     <option value="sale">For Sale</option>
                     <option value="rent">For Rent</option>
                   </select>
@@ -299,20 +311,47 @@ export function PropertyFormPage({ mode, property }: Props) {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className={lbl2} htmlFor="latitude">Latitude</label>
-                  <input ref={latRef} id="latitude" type="number" step="any" placeholder="18.4861"
-                    defaultValue={property?.latitude ?? ""} className={`${inp} text-xs`} />
+                  <input id="latitude" type="number" step="any" placeholder="18.4861"
+                    value={latitude} onChange={e => setLatitude(e.target.value)} className={`${inp} text-xs`} />
                 </div>
                 <div>
                   <label className={lbl2} htmlFor="longitude">Longitude</label>
-                  <input ref={lngRef} id="longitude" type="number" step="any" placeholder="-69.9312"
-                    defaultValue={property?.longitude ?? ""} className={`${inp} text-xs`} />
+                  <input id="longitude" type="number" step="any" placeholder="-69.9312"
+                    value={longitude} onChange={e => setLongitude(e.target.value)} className={`${inp} text-xs`} />
                 </div>
               </div>
-              <div className="h-36 rounded-xl bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/10 dark:to-transparent border border-primary/10 dark:border-primary/20 flex items-center justify-center">
-                <span className="bg-white/90 dark:bg-[#152e2a]/90 text-nordic dark:text-white px-3 py-1.5 rounded-lg shadow-sm text-xs font-bold flex items-center gap-1.5">
-                  <span className="material-icons text-sm text-primary">map</span> Map Preview
-                </span>
+              
+              <div className="flex gap-2">
+                <button 
+                  type="button"
+                  onClick={() => {
+                    if (navigator.geolocation) {
+                      navigator.geolocation.getCurrentPosition((pos) => {
+                        setLatitude(pos.coords.latitude.toFixed(6));
+                        setLongitude(pos.coords.longitude.toFixed(6));
+                      });
+                    }
+                  }}
+                  className="flex-1 py-2 px-3 bg-primary/10 hover:bg-primary/20 text-primary rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-colors border border-primary/20"
+                >
+                  <span className="material-icons text-sm">my_location</span>
+                  Use Current Location
+                </button>
               </div>
+
+              <div className="h-64 rounded-xl overflow-hidden border border-primary/10 dark:border-primary/20 bg-primary/5 relative shadow-inner">
+                <AdminMapPicker 
+                  lat={parseFloat(latitude) || 18.4861} 
+                  lng={parseFloat(longitude) || -69.9312} 
+                  onChange={(lat, lng) => {
+                    setLatitude(lat.toFixed(6));
+                    setLongitude(lng.toFixed(6));
+                  }}
+                />
+              </div>
+              <p className="text-[10px] text-gray-400 dark:text-gray-500 text-center italic">
+                Click on the map to precisely adjust the location marker
+              </p>
             </div>
           </div>
 
@@ -382,4 +421,36 @@ export function PropertyFormPage({ mode, property }: Props) {
       </div>
     </div>
   );
+}
+
+function AdminMapPicker({ lat, lng, onChange }: { lat: number; lng: number; onChange: (lat: number, lng: number) => void }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return <div className="w-full h-full bg-primary/5 animate-pulse flex items-center justify-center"><span className="material-icons text-primary/30">map</span></div>;
+
+  return (
+    <MapContainer center={[lat, lng]} zoom={13} style={{ height: "100%", width: "100%" }} scrollWheelZoom={false}>
+      <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+      <LocationMarker lat={lat} lng={lng} onChange={onChange} />
+    </MapContainer>
+  );
+}
+
+function LocationMarker({ lat, lng, onChange }: { lat: number; lng: number; onChange: (lat: number, lng: number) => void }) {
+  const map = useMapEvents({
+    click(e) {
+      onChange(e.latlng.lat, e.latlng.lng);
+    },
+  });
+
+  // Automatically pan to marker when coordinates change
+  useEffect(() => {
+    map.flyTo([lat, lng], map.getZoom());
+  }, [lat, lng, map]);
+
+  return <Marker position={[lat, lng]} icon={DefaultIcon} />;
 }

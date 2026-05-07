@@ -2,6 +2,7 @@ import React, { Suspense } from "react";
 import { createServerClient } from "@/lib/supabase/server";
 import Link from "next/link";
 import { AdminPropertiesControls } from "@/components/admin/AdminPropertiesControls";
+import { PropertyStatusToggle } from "@/components/admin/PropertyStatusToggle";
 
 interface PageProps {
   searchParams: Promise<{
@@ -11,6 +12,7 @@ interface PageProps {
     type?: string;
     badge?: string;
     featured?: string;
+    active?: string;
     min_beds?: string;
     min_baths?: string;
     min_price?: string;
@@ -27,7 +29,7 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
   const from = (page - 1) * limit;
   const to = from + limit - 1;
 
-  // Build query with filters
+  // Build query with filters — admin sees ALL properties regardless of is_active
   let query = supabase
     .from("properties")
     .select("*", { count: "exact" })
@@ -37,6 +39,9 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
   if (sp.type) query = query.eq("type", sp.type);
   if (sp.badge) query = query.eq("badge", sp.badge);
   if (sp.featured) query = query.eq("is_featured", sp.featured === "true");
+  // active filter: "true" = only active, "false" = only inactive, absent = all
+  if (sp.active === "true") query = query.eq("is_active", true);
+  if (sp.active === "false") query = query.eq("is_active", false);
   if (sp.min_beds) query = query.gte("beds", parseInt(sp.min_beds));
   if (sp.min_baths) query = query.gte("baths", parseInt(sp.min_baths));
   if (sp.min_price) query = query.gte("price", parseFloat(sp.min_price));
@@ -45,7 +50,7 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
   const { data: properties, count } = await query.range(from, to);
 
   const totalPages = Math.ceil((count || 0) / limit);
-  const hasFilters = !!(sp.q || sp.type || sp.badge || sp.featured || sp.min_beds || sp.min_price || sp.max_price);
+  const hasFilters = !!(sp.q || sp.type || sp.badge || sp.featured || sp.active || sp.min_beds || sp.min_price || sp.max_price);
 
   const buildHref = (updates: Record<string, string | number>) => {
     const params = new URLSearchParams();
@@ -54,6 +59,7 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
     if (sp.type) params.set("type", sp.type);
     if (sp.badge) params.set("badge", sp.badge);
     if (sp.featured) params.set("featured", sp.featured);
+    if (sp.active) params.set("active", sp.active);
     if (sp.min_beds) params.set("min_beds", sp.min_beds);
     if (sp.min_baths) params.set("min_baths", sp.min_baths);
     if (sp.min_price) params.set("min_price", sp.min_price);
@@ -96,23 +102,33 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
       <div className="bg-white dark:bg-[#152e2a] rounded-2xl shadow-sm border border-primary/10 dark:border-primary/20 overflow-hidden">
         {/* Table header */}
         <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-primary/5 dark:bg-primary/10 border-b border-primary/10 dark:border-primary/20 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-          <div className="col-span-6">Property Details</div>
+          <div className="col-span-5">Property Details</div>
           <div className="col-span-2">Price</div>
-          <div className="col-span-2">Status</div>
+          <div className="col-span-2">Badge</div>
+          <div className="col-span-1">Visibility</div>
           <div className="col-span-2 text-right">Actions</div>
         </div>
 
         {properties?.map((property) => (
           <div key={property.id}
-            className="group grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 border-b border-primary/5 dark:border-primary/10 hover:bg-primary/5 dark:hover:bg-primary/10 transition-colors items-center last:border-0">
+            className={`group grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 border-b border-primary/5 dark:border-primary/10 transition-colors items-center last:border-0 ${
+              property.is_active
+                ? "hover:bg-primary/5 dark:hover:bg-primary/10"
+                : "bg-gray-50/80 dark:bg-black/20 opacity-70 hover:opacity-100 hover:bg-gray-100/80 dark:hover:bg-black/30"
+            }`}>
             {/* Details */}
-            <div className="col-span-12 md:col-span-6 flex gap-4 items-center">
+            <div className="col-span-12 md:col-span-5 flex gap-4 items-center">
               <div className="relative h-16 w-24 flex-shrink-0 rounded-xl overflow-hidden bg-primary/10">
                 <img
                   alt={property.title}
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-110 ${!property.is_active ? "grayscale" : ""}`}
                   src={property.gallery_images?.[0] || "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=400"}
                 />
+                {!property.is_active && (
+                  <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                    <span className="material-icons text-white/80 text-2xl">visibility_off</span>
+                  </div>
+                )}
               </div>
               <div className="min-w-0">
                 <h3 className="text-sm font-bold text-nordic dark:text-white group-hover:text-primary transition-colors line-clamp-1">{property.title}</h3>
@@ -141,15 +157,26 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
               <div className="text-[11px] text-gray-400 mt-0.5 capitalize">{property.type}</div>
             </div>
 
-            {/* Status / Badge */}
+            {/* Badge */}
             <div className="col-span-6 md:col-span-2">
               {property.badge ? (
                 <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold capitalize ${statusColors[property.badge] || "bg-primary/10 text-primary"}`}>
                   {property.badge}
                 </span>
               ) : (
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/10">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary" /> Active
+                <span className="text-xs text-gray-400 dark:text-gray-500">—</span>
+              )}
+            </div>
+
+            {/* Visibility status */}
+            <div className="col-span-6 md:col-span-1">
+              {property.is_active ? (
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50 whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Active
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] font-semibold bg-gray-100 text-gray-500 dark:bg-gray-800/50 dark:text-gray-400 border border-gray-200 dark:border-gray-700 whitespace-nowrap">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400" /> Inactive
                 </span>
               )}
             </div>
@@ -160,9 +187,11 @@ export default async function PropertiesAdminPage({ searchParams }: PageProps) {
                 className="p-2 rounded-lg text-gray-400 hover:text-primary hover:bg-primary/10 transition-all" title="Edit Property">
                 <span className="material-icons text-xl">edit</span>
               </Link>
-              <button className="p-2 rounded-lg text-gray-400 hover:text-red-500 hover:bg-red-500/10 transition-all" title="Delete Property">
-                <span className="material-icons text-xl">delete_outline</span>
-              </button>
+              {/* Toggle active/inactive instead of deleting */}
+              <PropertyStatusToggle
+                id={property.id}
+                isActive={property.is_active ?? true}
+              />
             </div>
           </div>
         ))}
