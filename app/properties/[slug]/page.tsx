@@ -159,7 +159,7 @@ export default async function PropertyDetailsPage({
                 </div>
                 <div className="flex flex-col items-center justify-center p-4 bg-mosque/5 rounded-lg border border-mosque/10">
                   <span className="material-icons text-mosque text-2xl mb-2">directions_car</span>
-                  <span className="text-xl font-bold text-nordic">2</span>
+                  <span className="text-xl font-bold text-nordic">{property.parking ?? 0}</span>
                   <span className="text-xs uppercase tracking-wider text-nordic/50">{t("property.garage")}</span>
                 </div>
               </div>
@@ -185,35 +185,19 @@ export default async function PropertyDetailsPage({
               </button>
             </div>
             
-            <div className="bg-white p-8 rounded-xl shadow-sm border border-mosque/5">
-              <h2 className="text-lg font-semibold mb-6 text-nordic">{t("property.amenities")}</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.smartHome")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.pool")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.hvac")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.ev")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.gym")}</span>
-                </div>
-                <div className="flex items-center gap-3 text-nordic/70">
-                  <span className="material-icons text-mosque/60 text-sm">check_circle</span>
-                  <span>{t("property.cellar")}</span>
+            {property.amenities && property.amenities.length > 0 && (
+              <div className="bg-white p-8 rounded-xl shadow-sm border border-mosque/5">
+                <h2 className="text-lg font-semibold mb-6 text-nordic">{t("property.amenities")}</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
+                  {property.amenities.map((amenity) => (
+                    <div key={amenity} className="flex items-center gap-3 text-nordic/70">
+                      <span className="material-icons text-mosque/60 text-sm">check_circle</span>
+                      <span className="capitalize">{t(`filters.${amenity.toLowerCase()}`) || amenity}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
             
             <div className="bg-mosque/5 p-6 rounded-xl border border-mosque/10 flex flex-col sm:flex-row items-center justify-between gap-6">
               <div className="flex items-start gap-4">

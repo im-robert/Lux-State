@@ -91,7 +91,12 @@
     "and": "y",
     "across": "en",
     "ofLivingSpace": "de espacio habitable",
-    "layoutDescriptionEnd": "es el santuario perfecto para la relajación y el entretenimiento."
+    "layoutDescriptionEnd": "es el santuario perfecto para la relajación y el entretenimiento.",
+    "homes": "casas",
+    "savedSubtitle": "que has seleccionado para revisar más tarde.",
+    "noSavedTitle": "Aún no tienes casas guardadas",
+    "noSavedDesc": "Explora nuestras propiedades exclusivas y haz clic en el icono del corazón para guardar las que más te gusten.",
+    "browseProperties": "Explorar Propiedades"
   },
   "filters": {
     "title": "Filtros",
@@ -139,7 +144,26 @@
     "inquiries": "Consultas",
     "recentActivity": "Actividad Reciente",
     "quickActions": "Acciones Rápidas",
-    "addProperty": "Añadir Propiedad",
+    "addProperty": "Agregar Propiedad",
     "reviewRoles": "Revisar Roles"
+  },
+  "profile": {
+    "title": "Configuración de Cuenta",
+    "personalInfo": "Información Personal",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "bio": "Biografía Corta",
+    "saveChanges": "Guardar Cambios",
+    "saving": "Guardando...",
+    "success": "Perfil actualizado correctamente",
+    "error": "Error al actualizar el perfil",
+    "activity": "Tu Actividad",
+    "savedHomesCount": "Casas Guardadas",
+    "inquiriesCount": "Consultas Enviadas",
+    "memberSince": "Miembro desde",
+    "avatar": "Foto de Perfil",
+    "changeAvatar": "Cambiar Avatar",
+    "uploading": "Subiendo..."
   }
 }

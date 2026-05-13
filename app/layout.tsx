@@ -5,6 +5,7 @@ import { LanguageProvider } from "@/lib/i18n/LanguageContext";
 import { cookies } from "next/headers";
 import { Language } from "@/lib/i18n/translations";
 import { AuthProvider } from "@/lib/auth/AuthContext";
+import { FavoritesProvider } from "@/lib/context/FavoritesContext";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,9 +37,11 @@ export default async function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-background-light text-nordic-dark font-display">
         <AuthProvider>
-          <LanguageProvider initialLanguage={lang}>
-            {children}
-          </LanguageProvider>
+          <FavoritesProvider>
+            <LanguageProvider initialLanguage={lang}>
+              {children}
+            </LanguageProvider>
+          </FavoritesProvider>
         </AuthProvider>
       </body>
     </html>

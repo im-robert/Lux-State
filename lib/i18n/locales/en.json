@@ -91,7 +91,12 @@
     "and": "and",
     "across": "across",
     "ofLivingSpace": "of living space",
-    "layoutDescriptionEnd": "it's the perfect sanctuary for relaxation and entertaining."
+    "layoutDescriptionEnd": "it's the perfect sanctuary for relaxation and entertaining.",
+    "homes": "homes",
+    "savedSubtitle": "that you've selected to review later.",
+    "noSavedTitle": "No saved homes yet",
+    "noSavedDesc": "Explore our exclusive properties and click the heart icon to save the ones you love.",
+    "browseProperties": "Browse Properties"
   },
   "filters": {
     "title": "Filters",
@@ -141,5 +146,24 @@
     "quickActions": "Quick Actions",
     "addProperty": "Add Property",
     "reviewRoles": "Review Roles"
+  },
+  "profile": {
+    "title": "Account Settings",
+    "personalInfo": "Personal Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "bio": "Short Bio",
+    "saveChanges": "Save Changes",
+    "saving": "Saving...",
+    "success": "Profile updated successfully",
+    "error": "Failed to update profile",
+    "activity": "Your Activity",
+    "savedHomesCount": "Saved Homes",
+    "inquiriesCount": "Inquiries Sent",
+    "memberSince": "Member since",
+    "avatar": "Profile Picture",
+    "changeAvatar": "Change Avatar",
+    "uploading": "Uploading..."
   }
 }

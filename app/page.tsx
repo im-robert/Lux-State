@@ -4,6 +4,7 @@ import { Hero } from "../components/home/Hero";
 import { FeaturedPropertyCard } from "../components/properties/FeaturedPropertyCard";
 import { PropertyCard } from "../components/properties/PropertyCard";
 import { Pagination } from "../components/home/Pagination";
+import { IntentToggle } from "../components/home/IntentToggle";
 import { createServerClient } from "../lib/supabase/server";
 import { getTranslations } from "@/lib/i18n/server";
 
@@ -16,16 +17,18 @@ interface FilterParams {
   beds?: number;
   baths?: number;
   type?: string;
+  intent?: string;
+  amenities?: string[];
 }
 
 function applyFilters(queryBuilder: any, filters: FilterParams) {
   if (filters.query) {
     queryBuilder = queryBuilder.or(`location.ilike.%${filters.query}%,title.ilike.%${filters.query}%`);
   }
-  if (filters.minPrice) {
+  if (filters.minPrice !== undefined) {
     queryBuilder = queryBuilder.gte("price", filters.minPrice);
   }
-  if (filters.maxPrice) {
+  if (filters.maxPrice !== undefined) {
     queryBuilder = queryBuilder.lte("price", filters.maxPrice);
   }
   if (filters.beds) {
@@ -34,8 +37,15 @@ function applyFilters(queryBuilder: any, filters: FilterParams) {
   if (filters.baths) {
     queryBuilder = queryBuilder.gte("baths", filters.baths);
   }
-  if (filters.type && filters.type !== "Any Type") {
-    queryBuilder = queryBuilder.ilike("title", `%${filters.type}%`);
+  if (filters.type && filters.type !== "Any Type" && filters.type !== "Cualquiera") {
+    // Search in title or property_type column if it exists
+    queryBuilder = queryBuilder.or(`title.ilike.%${filters.type}%,description.ilike.%${filters.type}%`);
+  }
+  if (filters.amenities && filters.amenities.length > 0) {
+    queryBuilder = queryBuilder.contains("amenities", filters.amenities);
+  }
+  if (filters.intent && filters.intent !== "all") {
+    queryBuilder = queryBuilder.eq("type", filters.intent);
   }
   return queryBuilder;
 }
@@ -104,6 +114,8 @@ export default async function Home({
   const beds = typeof resolvedParams.beds === "string" ? parseInt(resolvedParams.beds) : undefined;
   const baths = typeof resolvedParams.baths === "string" ? parseInt(resolvedParams.baths) : undefined;
   const type = typeof resolvedParams.type === "string" ? resolvedParams.type : undefined;
+  const intent = typeof resolvedParams.intent === "string" ? resolvedParams.intent : undefined;
+  const amenities = typeof resolvedParams.amenities === "string" ? resolvedParams.amenities.split(",") : undefined;
 
   const filters: FilterParams = {
     query: searchQuery,
@@ -112,6 +124,8 @@ export default async function Home({
     beds,
     baths,
     type,
+    intent,
+    amenities,
   };
 
   const [featuredProperties, { data: newInMarketProperties, totalCount }] =
@@ -166,16 +180,8 @@ export default async function Home({
                 {t("home.new.subtitle")}
               </p>
             </div>
-            <div className="hidden md:flex bg-white p-1 rounded-lg">
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium bg-nordic-dark text-white shadow-sm">
-                {t("common.all")}
-              </button>
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark">
-                {t("nav.buy")}
-              </button>
-              <button className="px-4 py-1.5 rounded-md text-sm font-medium text-nordic-muted hover:text-nordic-dark">
-                {t("nav.rent")}
-              </button>
+            <div className="hidden md:flex">
+              <IntentToggle />
             </div>
           </div>
 

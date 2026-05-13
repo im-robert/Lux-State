@@ -86,12 +86,17 @@
     "viewOnGoogleMaps": "Voir sur Google Maps",
     "welcome": "Bienvenue à",
     "welcomeSubtitle": "une propriété de prestige située dans le quartier exclusif de",
-    "residenceDescription": "Cette magnifique résidence offre un style de vie sans pareil avec un luxe moderne et des éléments de design sophistiqués partout.",
-    "layoutDescription": "La disposition à aire ouverte est conçue en mettant l'accent sur la vie intérieure-extérieure, inondant les intérieurs de lumière naturelle. Avec",
+    "residenceDescription": "Cette magnifique résidence offre un style de vie sans pareil avec un luxe moderne et des éléments de design sophistiqués dans chaque recoin.",
+    "layoutDescription": "La disposition à aire ouverte met l'accent sur la vie intérieure-extérieure, inondant les intérieurs de lumière naturelle. Avec",
     "and": "et",
     "across": "sur",
     "ofLivingSpace": "d'espace de vie",
-    "layoutDescriptionEnd": "c'est le sanctuaire parfait para la relaxation et le divertissement."
+    "layoutDescriptionEnd": "c'est le sanctuaire parfait pour la relaxation et le divertissement.",
+    "homes": "maisons",
+    "savedSubtitle": "que vous avez sélectionnées pour les consulter plus tard.",
+    "noSavedTitle": "Pas encore de maisons enregistrées",
+    "noSavedDesc": "Explorez nos propriétés exclusives et cliquez sur l'icône du cœur pour enregistrer celles que vous aimez.",
+    "browseProperties": "Parcourir les Propriétés"
   },
   "filters": {
     "title": "Filtres",
@@ -111,7 +116,7 @@
     "ac": "Climatisation",
     "wifi": "Wifi Haut Débit",
     "patio": "Patio / Terrasse",
-    "clearAll": "Effacer tous los filtres",
+    "clearAll": "Effacer tous les filtres",
     "showResults": "Afficher les Résultats"
   },
   "auth": {
@@ -141,5 +146,24 @@
     "quickActions": "Actions Rapides",
     "addProperty": "Ajouter Propriété",
     "reviewRoles": "Réviser Rôles"
+  },
+  "profile": {
+    "title": "Paramètres du Compte",
+    "personalInfo": "Informations Personnelles",
+    "fullName": "Nom Complet",
+    "email": "Adresse Email",
+    "phone": "Numéro de Téléphone",
+    "bio": "Courte Biographie",
+    "saveChanges": "Enregistrer les Modifications",
+    "saving": "Enregistrement...",
+    "success": "Profil mis à jour avec succès",
+    "error": "Échec de la mise à jour du profil",
+    "activity": "Votre Activité",
+    "savedHomesCount": "Maisons Enregistrées",
+    "inquiriesCount": "Demandes Envoyées",
+    "memberSince": "Membre depuis",
+    "avatar": "Photo de Profil",
+    "changeAvatar": "Changer l'Avatar",
+    "uploading": "Téléchargement..."
   }
 }

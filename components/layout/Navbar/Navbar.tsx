@@ -49,9 +49,9 @@ export function Navbar() {
             <a className="text-nordic-dark/60 hover:text-nordic-dark font-medium text-sm transition-colors" href="#">
               {t("nav.sell")}
             </a>
-            <a className="text-nordic-dark/60 hover:text-nordic-dark font-medium text-sm transition-colors" href="#">
+            <Link href="/saved" className="text-nordic-dark/60 hover:text-nordic-dark font-medium text-sm transition-colors">
               {t("nav.saved")}
-            </a>
+            </Link>
           </div>
 
           {/* Right Actions */}
@@ -106,14 +106,22 @@ export function Navbar() {
                     </div>
                     
                     <div className="px-2">
-                      <button className="w-full text-left px-3 py-2.5 text-sm text-nordic-dark/70 hover:bg-black/5 hover:text-nordic-dark rounded-xl transition-colors flex items-center gap-3">
+                      <Link 
+                        href="/profile"
+                        className="w-full text-left px-3 py-2.5 text-sm text-nordic-dark/70 hover:bg-black/5 hover:text-nordic-dark rounded-xl transition-colors flex items-center gap-3"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
                         <span className="material-icons text-xl">person_outline</span>
                         {t("nav.profile")}
-                      </button>
-                      <button className="w-full text-left px-3 py-2.5 text-sm text-nordic-dark/70 hover:bg-black/5 hover:text-nordic-dark rounded-xl transition-colors flex items-center gap-3">
+                      </Link>
+                      <Link 
+                        href="/saved"
+                        className="w-full text-left px-3 py-2.5 text-sm text-nordic-dark/70 hover:bg-black/5 hover:text-nordic-dark rounded-xl transition-colors flex items-center gap-3"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
                         <span className="material-icons text-xl">favorite_border</span>
                         {t("nav.saved")}
-                      </button>
+                      </Link>
                       
                       <div className="h-[1px] bg-nordic-dark/5 my-2 mx-3"></div>
                       
@@ -153,7 +161,13 @@ export function Navbar() {
             <a className="flex items-center justify-center px-4 py-3 rounded-xl bg-mosque/10 text-mosque font-bold text-sm" href="#">{t("nav.buy")}</a>
             <a className="flex items-center justify-center px-4 py-3 rounded-xl bg-black/5 text-nordic-dark font-semibold text-sm" href="#">{t("nav.rent")}</a>
             <a className="flex items-center justify-center px-4 py-3 rounded-xl bg-black/5 text-nordic-dark font-semibold text-sm" href="#">{t("nav.sell")}</a>
-            <a className="flex items-center justify-center px-4 py-3 rounded-xl bg-black/5 text-nordic-dark font-semibold text-sm" href="#">{t("nav.saved")}</a>
+            <Link 
+              href="/saved" 
+              className="flex items-center justify-center px-4 py-3 rounded-xl bg-black/5 text-nordic-dark font-semibold text-sm"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              {t("nav.saved")}
+            </Link>
           </div>
 
           <div className="pt-2">

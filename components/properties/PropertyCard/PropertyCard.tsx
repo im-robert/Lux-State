@@ -5,9 +5,19 @@ import Link from "next/link";
 import { Property } from "../../../types/property";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
+import { useFavorites } from "@/lib/context/FavoritesContext";
+
 export function PropertyCard({ property }: { property: Property }) {
   const { t } = useLanguage();
+  const { isFavorite, toggleFavorite } = useFavorites();
   const isSale = property.type === "sale";
+  const favorited = isFavorite(property.id);
+
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleFavorite(property.id);
+  };
 
   const getTranslatedBadge = (badge: string | null) => {
     if (!badge) return null;
@@ -48,8 +58,15 @@ export function PropertyCard({ property }: { property: Property }) {
           </div>
         )}
 
-        <button className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full hover:bg-mosque hover:text-white transition-colors text-nordic-dark flex items-center justify-center shadow-md z-10">
-          <span className="material-icons text-lg">favorite_border</span>
+        <button 
+          onClick={handleFavoriteClick}
+          className={`absolute top-3 right-3 w-10 h-10 rounded-full transition-all flex items-center justify-center shadow-md z-10 ${
+            favorited 
+              ? "bg-mosque text-white scale-110" 
+              : "bg-white/90 backdrop-blur-sm text-nordic-dark hover:bg-mosque hover:text-white"
+          }`}
+        >
+          <span className="material-icons text-lg">{favorited ? "favorite" : "favorite_border"}</span>
         </button>
         
         <div className={`absolute bottom-3 left-3 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm ${isSale ? 'bg-nordic-dark/90' : 'bg-mosque/90'}`}>

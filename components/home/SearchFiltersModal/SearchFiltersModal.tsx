@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/LanguageContext";
 
 interface SearchFiltersModalProps {
@@ -15,22 +16,38 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
   const searchParams = useSearchParams();
 
   const [location, setLocation] = useState(searchParams.get("q") || "");
-  const [minPrice, setMinPrice] = useState(searchParams.get("minPrice") || "1200000");
-  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") || "4500000");
+  const [minPrice, setMinPrice] = useState(parseInt(searchParams.get("minPrice") || "0"));
+  const [maxPrice, setMaxPrice] = useState(parseInt(searchParams.get("maxPrice") || "10000000"));
   const [propertyType, setPropertyType] = useState(searchParams.get("type") || t("filters.anyType"));
-  const [bedrooms, setBedrooms] = useState(parseInt(searchParams.get("beds") || "3"));
-  const [bathrooms, setBathrooms] = useState(parseInt(searchParams.get("baths") || "2"));
+  const [bedrooms, setBedrooms] = useState(parseInt(searchParams.get("beds") || "0"));
+  const [bathrooms, setBathrooms] = useState(parseInt(searchParams.get("baths") || "0"));
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
+    searchParams.get("amenities")?.split(",") || []
+  );
+
+  const minLimit = 0;
+  const maxLimit = 10000000;
+  const step = 50000;
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      // Sync state with search params when modal opens
+      setLocation(searchParams.get("q") || "");
+      setMinPrice(parseInt(searchParams.get("minPrice") || "0"));
+      setMaxPrice(parseInt(searchParams.get("maxPrice") || "10000000"));
+      setPropertyType(searchParams.get("type") || t("filters.anyType"));
+      setBedrooms(parseInt(searchParams.get("beds") || "0"));
+      setBathrooms(parseInt(searchParams.get("baths") || "0"));
+      setSelectedAmenities(searchParams.get("amenities")?.split(",") || []);
     } else {
       document.body.style.overflow = "unset";
     }
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen]);
+  }, [isOpen, searchParams, t]);
+
 
   const handleApplyFilters = () => {
     const params = new URLSearchParams(searchParams.toString());
@@ -38,10 +55,10 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     if (location.trim()) params.set("q", location.trim());
     else params.delete("q");
 
-    if (minPrice) params.set("minPrice", minPrice.replace(/\D/g, ""));
+    if (minPrice > minLimit) params.set("minPrice", minPrice.toString());
     else params.delete("minPrice");
 
-    if (maxPrice) params.set("maxPrice", maxPrice.replace(/\D/g, ""));
+    if (maxPrice < maxLimit) params.set("maxPrice", maxPrice.toString());
     else params.delete("maxPrice");
 
     if (propertyType && propertyType !== t("filters.anyType")) params.set("type", propertyType);
@@ -53,6 +70,9 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
     if (bathrooms > 0) params.set("baths", bathrooms.toString());
     else params.delete("baths");
 
+    if (selectedAmenities.length > 0) params.set("amenities", selectedAmenities.join(","));
+    else params.delete("amenities");
+
     params.set("page", "1");
     router.push(`/?${params.toString()}`);
     onClose();
@@ -60,33 +80,65 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
 
   const handleClearFilters = () => {
     setLocation("");
-    setMinPrice("");
-    setMaxPrice("");
+    setMinPrice(minLimit);
+    setMaxPrice(maxLimit);
     setPropertyType(t("filters.anyType"));
     setBedrooms(0);
     setBathrooms(0);
+    setSelectedAmenities([]);
   };
 
-  if (!isOpen) return null;
+  const toggleAmenity = (id: string) => {
+    setSelectedAmenities(prev => 
+      prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
+    );
+  };
+
+  const formatPrice = (price: number) => {
+    if (price >= 1000000) return `$${(price / 1000000).toFixed(1)}M`;
+    if (price >= 1000) return `$${(price / 1000).toFixed(0)}K`;
+    return `$${price}`;
+  };
+
+  const AMENITIES_LIST = [
+    { id: "pool", icon: "pool", label: t("filters.pool") },
+    { id: "gym", icon: "fitness_center", label: t("filters.gym") },
+    { id: "parking", icon: "local_parking", label: t("filters.parking") },
+    { id: "ac", icon: "ac_unit", label: t("filters.ac") },
+    { id: "wifi", icon: "wifi", label: t("filters.wifi") },
+    { id: "patio", icon: "deck", label: t("filters.patio") },
+  ];
+
 
   return (
-    <>
-      <div 
-        className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100] transition-opacity" 
-        onClick={onClose}
-      />
-      <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[110] w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-        <header className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-30">
-          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">{t("filters.title")}</h1>
-          <button 
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100] transition-opacity" 
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: "-45%", x: "-50%" }}
+            animate={{ opacity: 1, scale: 1, y: "-50%", x: "-50%" }}
+            exit={{ opacity: 0, scale: 0.9, y: "-45%", x: "-50%" }}
+            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            className="fixed top-1/2 left-1/2 z-[110] w-full max-w-2xl bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
           >
-            <span className="material-icons">close</span>
-          </button>
-        </header>
+            <header className="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-30">
+              <h1 className="text-2xl font-semibold tracking-tight text-gray-900">{t("filters.title")}</h1>
+              <button 
+                onClick={onClose}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors text-gray-500"
+              >
+                <span className="material-icons">close</span>
+              </button>
+            </header>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10">
+            <div className="flex-1 overflow-y-auto custom-scrollbar p-8 space-y-10">
           <section>
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">{t("filters.location")}</label>
             <div className="relative group">
@@ -104,15 +156,41 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
           <section>
             <div className="flex justify-between items-end mb-4">
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider">{t("filters.priceRange")}</label>
-              <span className="text-sm font-medium text-mosque">$1.2M – $4.5M</span>
+              <span className="text-sm font-medium text-mosque">{formatPrice(minPrice)} – {formatPrice(maxPrice)}</span>
             </div>
+            
             <div className="relative h-12 flex items-center mb-6 px-2">
-              <div className="absolute w-full h-1 bg-gray-200 rounded-full overflow-hidden">
-                <div className="h-full bg-mosque w-1/3 ml-[20%]"></div>
+              <div className="absolute w-full h-1 bg-gray-200 rounded-full">
+                <div 
+                  className="absolute h-full bg-mosque rounded-full"
+                  style={{ 
+                    left: `${(minPrice / maxLimit) * 100}%`, 
+                    right: `${100 - (maxPrice / maxLimit) * 100}%` 
+                  }}
+                ></div>
               </div>
-              <div className="absolute left-[20%] w-6 h-6 bg-white border-2 border-mosque rounded-full shadow-md cursor-pointer hover:scale-110 transition-transform -ml-3 z-10"></div>
-              <div className="absolute left-[53%] w-6 h-6 bg-white border-2 border-mosque rounded-full shadow-md cursor-pointer hover:scale-110 transition-transform -ml-3 z-10"></div>
+              
+              <input
+                type="range"
+                min={minLimit}
+                max={maxLimit}
+                step={step}
+                value={minPrice}
+                onChange={(e) => setMinPrice(Math.min(parseInt(e.target.value), maxPrice - step))}
+                className="absolute w-full h-1 bg-transparent appearance-none pointer-events-none z-20 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-mosque [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+              />
+              
+              <input
+                type="range"
+                min={minLimit}
+                max={maxLimit}
+                step={step}
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(Math.max(parseInt(e.target.value), minPrice + step))}
+                className="absolute w-full h-1 bg-transparent appearance-none pointer-events-none z-20 [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-6 [&::-webkit-slider-thumb]:h-6 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-mosque [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:shadow-md [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:hover:scale-110 [&::-webkit-slider-thumb]:transition-transform"
+              />
             </div>
+
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-gray-50 p-3 rounded-lg border border-transparent focus-within:border-mosque/30 transition-colors">
                 <label className="block text-[10px] text-gray-500 uppercase font-medium mb-1">{t("filters.minPrice")}</label>
@@ -120,9 +198,9 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                   <span className="text-gray-400 mr-1">$</span>
                   <input 
                     className="w-full bg-transparent border-0 p-0 text-gray-900 font-medium focus:ring-0 text-sm outline-none" 
-                    type="text" 
+                    type="number" 
                     value={minPrice} 
-                    onChange={(e) => setMinPrice(e.target.value)} 
+                    onChange={(e) => setMinPrice(parseInt(e.target.value) || 0)} 
                   />
                 </div>
               </div>
@@ -132,9 +210,9 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                   <span className="text-gray-400 mr-1">$</span>
                   <input 
                     className="w-full bg-transparent border-0 p-0 text-gray-900 font-medium focus:ring-0 text-sm outline-none" 
-                    type="text" 
+                    type="number" 
                     value={maxPrice} 
-                    onChange={(e) => setMaxPrice(e.target.value)} 
+                    onChange={(e) => setMaxPrice(parseInt(e.target.value) || 0)} 
                   />
                 </div>
               </div>
@@ -151,10 +229,10 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
                   onChange={(e) => setPropertyType(e.target.value)}
                 >
                   <option>{t("filters.anyType")}</option>
-                  <option>{t("hero.types.house")}</option>
-                  <option>{t("hero.types.apartment")}</option>
-                  <option>{t("hero.types.villa")}</option>
-                  <option>{t("hero.types.penthouse")}</option>
+                  <option value="House">{t("hero.types.house")}</option>
+                  <option value="Apartment">{t("hero.types.apartment")}</option>
+                  <option value="Villa">{t("hero.types.villa")}</option>
+                  <option value="Penthouse">{t("hero.types.penthouse")}</option>
                 </select>
                 <span className="material-icons absolute right-3 top-3 text-gray-400 pointer-events-none">expand_more</span>
               </div>
@@ -203,49 +281,33 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
           <section>
             <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">{t("filters.amenities")}</label>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              <label className="cursor-pointer group relative">
-                <input defaultChecked className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-mosque bg-mosque/5 text-mosque font-medium text-sm flex items-center justify-center gap-2 transition-all peer-checked:bg-mosque/10 peer-checked:border-mosque peer-checked:text-mosque hover:bg-mosque/10">
-                  <span className="material-icons text-lg">pool</span> {t("filters.pool")}
-                </div>
-                <div className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full opacity-100 transition-opacity"></div>
-              </label>
-
-              <label className="cursor-pointer group relative">
-                <input className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">fitness_center</span> {t("filters.gym")}
-                </div>
-              </label>
-
-              <label className="cursor-pointer group relative">
-                <input className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">local_parking</span> {t("filters.parking")}
-                </div>
-              </label>
-
-              <label className="cursor-pointer group relative">
-                <input className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">ac_unit</span> {t("filters.ac")}
-                </div>
-              </label>
-
-              <label className="cursor-pointer group relative">
-                <input defaultChecked className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-mosque bg-mosque/5 text-mosque font-medium text-sm flex items-center justify-center gap-2 transition-all peer-checked:bg-mosque/10 peer-checked:border-mosque peer-checked:text-mosque hover:bg-mosque/10">
-                  <span className="material-icons text-lg">wifi</span> {t("filters.wifi")}
-                </div>
-                <div className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full opacity-100 transition-opacity"></div>
-              </label>
-
-              <label className="cursor-pointer group relative">
-                <input className="peer sr-only" type="checkbox" />
-                <div className="h-full px-4 py-3 rounded-lg border border-gray-200 bg-white text-gray-600 text-sm flex items-center justify-center gap-2 transition-all hover:border-gray-300 peer-checked:border-mosque peer-checked:bg-mosque/5 peer-checked:text-mosque">
-                  <span className="material-icons text-lg text-gray-400 group-hover:text-gray-500 peer-checked:text-mosque">deck</span> {t("filters.patio")}
-                </div>
-              </label>
+              {AMENITIES_LIST.map((amenity) => {
+                const isSelected = selectedAmenities.includes(amenity.id);
+                return (
+                  <motion.button
+                    key={amenity.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => toggleAmenity(amenity.id)}
+                    className={`relative px-4 py-3 rounded-lg border font-medium text-sm flex items-center justify-center gap-2 transition-all ${
+                      isSelected 
+                        ? "border-mosque bg-mosque/5 text-mosque" 
+                        : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                    }`}
+                  >
+                    <span className={`material-icons text-lg ${isSelected ? "text-mosque" : "text-gray-400"}`}>
+                      {amenity.icon}
+                    </span> 
+                    {amenity.label}
+                    {isSelected && (
+                      <motion.div 
+                        layoutId="active-dot"
+                        className="absolute top-2 right-2 w-2 h-2 bg-mosque rounded-full"
+                      ></motion.div>
+                    )}
+                  </motion.button>
+                );
+              })}
             </div>
           </section>
         </div>
@@ -265,8 +327,11 @@ export function SearchFiltersModal({ isOpen, onClose }: SearchFiltersModalProps)
             <span className="material-icons text-sm">arrow_forward</span>
           </button>
         </footer>
-      </div>
-    </>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+
   );
 }
 
